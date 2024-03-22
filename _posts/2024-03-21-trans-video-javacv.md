@@ -14,11 +14,11 @@ we overlay them in editing software, it'd look like this:
 ## Things about video codecs
 Only some special video codecs support alpha channels. The most used are:
 
-| Codecs                                  | The pixel format that includes alpha | Available Containers    |
-|-----------------------------------------|--------------------------------------|-------------------------|
-| ffv1 (FFmpeg video codec #1)            | bgra                                 | AVI, MKV, MOV, NUT, ... |
-| qtrle (QuickTime Animation (RLE) video) | argb                                 | MOV                     |
-| ***PNG***                               | rgba                                 | MOV                     |
+| Codecs                                  | The pixel format that includes alpha | Available Containers    | Supported by PowerDirector |
+|-----------------------------------------|--------------------------------------|-------------------------|----------------------------|
+| ffv1 (FFmpeg video codec #1)            | bgra                                 | AVI, MKV, MOV, NUT, ... | :x:                        |
+| qtrle (QuickTime Animation (RLE) video) | argb                                 | MOV                     | :x:                        |
+| ***PNG***                               | rgba                                 | MOV                     | :heavy_check_mark:         |
 
 Above is the information I got on the Internet, not sure if there are more available containers, but the MOV is tested and 
 is sure to work.
@@ -38,10 +38,23 @@ which makes the file size huge compared to common codecs like h.265.
 
 ## Implementation
 
-Let's output a video with a PNG codec and MOV format. Other codecs can be applied easily, just be careful to use the
-corresponding pixel formats.
+Let's output a video with a PNG codec and MOV format using the `FFmpegFrameRecorder` in JavaCV,
+and I'll show you how to do it with Java `BufferedImage`.
+
+Other codecs can be applied easily, just be careful to use the corresponding pixel formats.
 (Only the essential part of the code displayed here.)
 ``` java
+// Setup a converter for coverting a buffered image to the accepted Frame format.
+Java2DFrameConverter java2DFrameConverter = new Java2DFrameConverter();
+
+// Setup the buffered image you want to record.
+BufferedImage bufferedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+
+// Draw something on the buffered image.
+Graphics2D imgG2d = (Graphics2D) bufferedImage.getGraphics();
+imgG2d.fillRect(...);
+
+// Setup the frame recorder.
 FFmpegFrameRecorder frameRecorder = new FFmpegFrameRecorder(...);
 frameRecorder.setFrameRate(...);
 frameRecorder.setVideoBitrate(...);
@@ -49,11 +62,12 @@ frameRecorder.setVideoCodec(avcodec.AV_CODEC_ID_PNG);
 frameRecorder.setPixelFormat(avutil.AV_PIX_FMT_RGBA);
 frameRecorder.setFormat("mov");
 
-try{
+try {
    frameRecorder.start();
 
    for(...){
-    frameRecorder.record(...);
+      Frame frame = java2DFrameConverter.getFrame(bufferedImage);
+      frameRecorder.record(frame, AV_PIX_FMT_ARGB);
    } 
 } catch(...) {
     ...
@@ -61,6 +75,19 @@ try{
 
 frameRecorder.close();
 ```
+
+It's done. You can now output your own transparent videos!
+
+Here are screenshots of comparison of **our** outputted video vs. **Sayatoo's** vs. **H265 common**.
+# Our Format                                             
+![ours]({{ site.baseurl }}/assets/img/formatOfOurs.jpg)
+
+# Sayatoo's Format                      
+![sayatoo]({{ site.baseurl }}/assets/img/formatOfSayatoo.jpg) 
+
+# H265 Common Format                   
+![h265]({{ site.baseurl }}/assets/img/commonFormatH265.jpg)
+
 
 # Why I wrote this post?
 I am working on [a karaoke software project](https://github.com/Bowen951209/open-karaoke-toolkit), being confused about
