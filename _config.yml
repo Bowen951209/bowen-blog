@@ -22,7 +22,7 @@ title: Bowen's Blog
 email: bowen951209@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   This is Bowen's blog site. If there's any issue or a possible improvement, tell me by the email.
-baseurl: "bowen_blog" # the subpath of your site, e.g. /blog
+baseurl: "/bowen_blog" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  bowen951209
 
