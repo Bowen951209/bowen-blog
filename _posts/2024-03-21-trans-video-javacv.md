@@ -9,7 +9,7 @@ categories: computer vision
 A video with an alpha channel is convenient when we're doing some clip editing. For me, I'd like to use that for karaoke
 videos, which has a karaoke animation video source on the top layer, and the background images on the bottom layer. When
 we overlay them in editing software, it'd look like this:
-![a karaoke video frame]({{ site.baseurl }}/assets/img/karaoke1.png)
+![a karaoke video frame]({{ site.baseurl }}/assets/img/transVideo/karaoke1.png)
 
 ## Things about video codecs
 Only some special video codecs support alpha channels. The most used are:
@@ -80,13 +80,13 @@ It's done. You can now output your own transparent videos!
 
 Here are screenshots of comparison of **our** outputted video vs. **Sayatoo's** vs. **H265 common**.
 # Our Format                                             
-![ours]({{ site.baseurl }}/assets/img/formatOfOurs.jpg)
+![ours]({{ site.baseurl }}/assets/img/transVideo/formatOfOurs.jpg)
 
 # Sayatoo's Format                      
-![sayatoo]({{ site.baseurl }}/assets/img/formatOfSayatoo.jpg) 
+![sayatoo]({{ site.baseurl }}/assets/img/transVideo/formatOfSayatoo.jpg) 
 
 # H265 Common Format                   
-![h265]({{ site.baseurl }}/assets/img/commonFormatH265.jpg)
+![h265]({{ site.baseurl }}/assets/img/transVideo/commonFormatH265.jpg)
 
 
 # Why I wrote this post?
