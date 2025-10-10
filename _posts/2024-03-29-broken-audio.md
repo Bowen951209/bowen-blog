@@ -21,12 +21,12 @@ addition of them becomes a flat pattern, making no sound, which is called the de
 
 Here is a figure showing this:
 
-![interference]({{ site.baseurl }}/assets/images/fix_audio/interference.jpg)
+![interference](/assets/images/fix_audio/interference.jpg)
 
 [source](https://www.google.com/url?sa=i&url=https%3A%2F%2Fkids.britannica.com%2Fstudents%2Fassembly%2Fview%2F53869&psig=AOvVaw33kaGuH7MmnhUDcbA5C7f3&ust=1711793717527000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCNiT9tuemYUDFQAAAAAdAAAAABAE)
 
 The waveform screenshot of my audio in iZotope RX 10:
-![waveform]({{ site.baseurl }}/assets/images/fix_audio/oWave.jpg)
+![waveform](/assets/images/fix_audio/oWave.jpg)
 You can see that the two waves are almost completely opposite.
 
 As you may have known, most of the audios contain two sound channels — the left and the right. And somehow some encoding
@@ -39,17 +39,17 @@ in an audio editor. I'll do it in RX10. If you don't have the software, others l
 should be similar.
 
 ### Select one of the channels and copy it with Ctrl + C
-![copying]({{ site.baseurl }}/assets/images/fix_audio/copying.jpg)
+![copying](/assets/images/fix_audio/copying.jpg)
 
 ### Delete both channel
-![deleting]({{ site.baseurl }}/assets/images/fix_audio/deleting.jpg)
+![deleting](/assets/images/fix_audio/deleting.jpg)
 
 ### Select both channel and paste with Ctrl + V
-![pasting]({{ site.baseurl }}/assets/images/fix_audio/pasting.jpg)
+![pasting](/assets/images/fix_audio/pasting.jpg)
 As you can see, the two waves are now identity.
 
 ### Export the audio and done
-![pasting]({{ site.baseurl }}/assets/images/fix_audio/exporting.jpg)
+![pasting](/assets/images/fix_audio/exporting.jpg)
 Export with whatever settings you want.
 
 ## Story About The Audio
