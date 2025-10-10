@@ -1,5 +1,8 @@
 # The Site Configuration
 
+plugins:
+  - jektex
+
 # Import the theme
 theme: jekyll-theme-chirpy
 
@@ -159,6 +162,9 @@ kramdown:
     block:
       line_numbers: true
       start_line: 1
+
+jektex:
+  cache_dir: ".jektex-cache"
 
 collections:
   tabs:
