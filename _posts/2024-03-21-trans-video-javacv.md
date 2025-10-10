@@ -2,7 +2,7 @@
 layout: post
 title:  "Exporting a video with an alpha channel using JavaCV."
 date:   2024-03-21 +0800
-categories: computer vision
+categories: computer
 ---
 
 ## Transparency
