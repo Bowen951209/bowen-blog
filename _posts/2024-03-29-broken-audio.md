@@ -7,8 +7,7 @@ categories: audio
 
 ## The Problem
 Here's an audio I [got](https://drive.google.com/file/d/19lPfO9cObfgaboDs60bwRG0c7Gg-69Wb/view?usp=sharing). It played 
-normally on my PC, but sounded broken when playing on my phone.  
-Here is a [video](https://www.youtube.com/watch?v=Gz9SvuciEo4) demonstrating the situation. Try to play it on your 
+normally on my PC, but sounded broken when playing on my phone. Try to play it on your 
 devices and see if you encounter the same issue as mine.
 
 ## Why did that happen? — Destructive Interference
@@ -22,12 +21,12 @@ addition of them becomes a flat pattern, making no sound, which is called the de
 
 Here is a figure showing this:
 
-![interference]({{ site.baseurl }}/assets/img/fixAudio/interference.jpg)
+![interference]({{ site.baseurl }}/assets/images/fix_audio/interference.jpg)
 
 [source](https://www.google.com/url?sa=i&url=https%3A%2F%2Fkids.britannica.com%2Fstudents%2Fassembly%2Fview%2F53869&psig=AOvVaw33kaGuH7MmnhUDcbA5C7f3&ust=1711793717527000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCNiT9tuemYUDFQAAAAAdAAAAABAE)
 
 The waveform screenshot of my audio in iZotope RX 10:
-![waveform]({{ site.baseurl }}/assets/img/fixAudio/oWave.jpg)
+![waveform]({{ site.baseurl }}/assets/images/fix_audio/oWave.jpg)
 You can see that the two waves are almost completely opposite.
 
 As you may have known, most of the audios contain two sound channels — the left and the right. And somehow some encoding
@@ -40,17 +39,17 @@ in an audio editor. I'll do it in RX10. If you don't have the software, others l
 should be similar.
 
 ### Select one of the channels and copy it with Ctrl + C
-![copying]({{ site.baseurl }}/assets/img/fixAudio/copying.jpg)
+![copying]({{ site.baseurl }}/assets/images/fix_audio/copying.jpg)
 
 ### Delete both channel
-![deleting]({{ site.baseurl }}/assets/img/fixAudio/deleting.jpg)
+![deleting]({{ site.baseurl }}/assets/images/fix_audio/deleting.jpg)
 
 ### Select both channel and paste with Ctrl + V
-![pasting]({{ site.baseurl }}/assets/img/fixAudio/pasting.jpg)
+![pasting]({{ site.baseurl }}/assets/images/fix_audio/pasting.jpg)
 As you can see, the two waves are now identity.
 
 ### Export the audio and done
-![pasting]({{ site.baseurl }}/assets/img/fixAudio/exporting.jpg)
+![pasting]({{ site.baseurl }}/assets/images/fix_audio/exporting.jpg)
 Export with whatever settings you want.
 
 ## Story About The Audio
