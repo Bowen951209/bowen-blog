@@ -16,3 +16,19 @@ sed -i -E "s/^(plugins=\()(git)(\))/\1\2 zsh-syntax-highlighting zsh-autosuggest
 
 # Avoid git log use less
 echo -e "\nunset LESS" >>~/.zshrc
+
+# Install TeX + dvisvgm if not present
+if ! command -v latex >/dev/null 2>&1 || ! command -v dvisvgm >/dev/null 2>&1; then
+  echo "Installing TeX and dvisvgm..."
+  export DEBIAN_FRONTEND=noninteractive
+  sudo apt-get update
+  sudo apt-get install -y --no-install-recommends \
+    texlive-latex-base \
+    texlive-latex-extra \
+    texlive-fonts-recommended \
+    dvisvgm
+  sudo apt-get clean
+  sudo rm -rf /var/lib/apt/lists/*
+else
+  echo "latex and dvisvgm already installed"
+fi
