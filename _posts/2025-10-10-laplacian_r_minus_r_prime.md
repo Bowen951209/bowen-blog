@@ -68,7 +68,7 @@ $$
 \nabla^2 (\frac{1}{|\vec r - \vec r'|}) = 0.
 $$
 
-# Method 2 --- Spherical Coordinate System
+# Method 2 --- Spherical Coordinates
 
 It is best to calculate this in spherical coordinate system.
 Here's the result for the laplacian operator in spherical coordinate system.
@@ -103,5 +103,11 @@ $$
 Thus we conclude
 
 $$
-\nabla^2 \frac{1}{|\vec r|} = -4\pi\,\delta^3(\vec r).
+\nabla^2 \frac{1}{|\vec r|} = -4\pi\,\delta^3(\vec r),
+$$
+
+And the offset version
+
+$$
+\nabla^2 \frac{1}{|\vec r - \vec r'|} = -4\pi\,\delta^3(\vec r - \vec r'),
 $$
