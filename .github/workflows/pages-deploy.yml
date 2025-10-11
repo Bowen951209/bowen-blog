@@ -22,29 +22,26 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    container:
+      image: mcr.microsoft.com/devcontainers/jekyll:2-bullseye
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # Run devcontainer post-create script to setup additional tools
+      - name: Devcontainer Post-create Setup
+        run: |
+          if [ -f .devcontainer/post-create.sh ]; then
+            bash .devcontainer/post-create.sh
+          fi
+
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
 
-      - name: Install LaTeX + dvisvgm
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended dvisvgm
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.3
-          bundler-cache: true
-
+      # Build site (assumes Jekyll and Ruby dependencies are already in the container)
       - name: Build site
         run: bundle exec jekyll b -d "_site${{ steps.pages.outputs.base_path }}"
         env:
@@ -53,8 +50,8 @@ jobs:
       - name: Test site
         run: |
           bundle exec htmlproofer _site \
-            \-\-disable-external \
-            \-\-ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/"
+            --disable-external \
+            --ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/"
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
