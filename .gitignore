@@ -11,6 +11,10 @@ _site
 # Jektex cache
 .jektex-cache
 
+# Tikz temp files
+_tikz_tmp
+assets/tikz
+
 # RubyGems
 *.gem
 

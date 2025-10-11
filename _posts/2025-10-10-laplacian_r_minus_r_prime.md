@@ -111,3 +111,12 @@ And the offset version
 $$
 \nabla^2 \frac{1}{|\vec r - \vec r'|} = -4\pi\,\delta^3(\vec r - \vec r'),
 $$
+
+
+$$
+\begin{tikzpicture}[scale=2.0]
+  \draw [red] (0:1) arc [radius=1, start angle=0, end angle=120];
+  \draw [green] (120:1) arc [radius=1, start angle=120, end angle=240];
+  \draw [blue] (240:1) arc [radius=1, start angle=240, end angle=360];
+\end{tikzpicture}
+$$
