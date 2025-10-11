@@ -27,20 +27,25 @@ module Jekyll
       return unless doc.output_ext == ".html" || doc.extname =~ /md|markdown/
 
       content = doc.content
-      new_content = content.gsub(/\$\$\s*\\begin\{tikzpicture\}(.*?)\\end\{tikzpicture\}\s*\$\$/m) do
-        tikz_code = $1.strip
-        svg_path = generate_svg(tikz_code, source_dir)
-        svg_code = File.read(svg_path)
-        # Wrap the SVG with a div to provide a consistent background and styling hook.
+      new_content = content.gsub(/\$\$(.*?)\$\$/m) do
+        inner = $1
+        if inner =~ /(.*?)\\begin\{tikzpicture\}(.*?)\\end\{tikzpicture\}/m
+          preamble = $1.strip
+          tikz_body = $2.strip
+          svg_path = generate_svg(tikz_body, source_dir, preamble)
+          svg_code = File.exist?(svg_path) ? File.read(svg_path) : ""
         "<div class='tikz-svg'>#{svg_code}</div>"
+        else
+          "$$#{inner}$$"
+        end
       end
 
       doc.content = new_content
     end
 
-    def generate_svg(tikz_code, source_dir)
+  def generate_svg(tikz_code, source_dir, preamble = "")
       # Compute a content-based hash to cache generated outputs and avoid rerendering identical TikZ.
-      hash = Digest::MD5.hexdigest(tikz_code)
+      hash = Digest::MD5.hexdigest("#{preamble}\n#{tikz_code}")
       @used_hashes << hash
 
       tmp_dir = File.join(source_dir, "_tikz_tmp")
@@ -58,7 +63,10 @@ module Jekyll
       tex_content = <<~TEX
         \\documentclass[tikz,border=2pt]{standalone}
         \\usepackage{tikz}
+        \\usepackage{tikz-3dplot}
+        \\usepackage{xcolor}
         \\begin{document}
+        #{preamble}
         \\begin{tikzpicture}
         #{tikz_code}
         \\end{tikzpicture}
