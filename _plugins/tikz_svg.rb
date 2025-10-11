@@ -27,20 +27,25 @@ module Jekyll
       return unless doc.output_ext == ".html" || doc.extname =~ /md|markdown/
 
       content = doc.content
-      new_content = content.gsub(/\$\$\s*\\begin\{tikzpicture\}(.*?)\\end\{tikzpicture\}\s*\$\$/m) do
-        tikz_code = $1.strip
-        svg_path = generate_svg(tikz_code, source_dir)
-        svg_code = File.read(svg_path)
-        # Wrap the SVG with a div to provide a consistent background and styling hook.
-        "<div class='tikz-svg'>#{svg_code}</div>"
+      new_content = content.gsub(/\$\$(.*?)\$\$/m) do
+        inner = $1
+        if inner =~ /(.*?)\\begin\{tikzpicture\}(.*?)\\end\{tikzpicture\}/m
+          preamble = $1.strip
+          tikz_body = $2.strip
+          svg_path = generate_svg(tikz_body, source_dir, preamble)
+          svg_code = File.exist?(svg_path) ? File.read(svg_path) : ""
+          "<div class='tikz-svg'>#{svg_code}</div>"
+        else
+          "$$#{inner}$$"
+        end
       end
 
       doc.content = new_content
     end
 
-    def generate_svg(tikz_code, source_dir)
+  def generate_svg(tikz_code, source_dir, preamble = "")
       # Compute a content-based hash to cache generated outputs and avoid rerendering identical TikZ.
-      hash = Digest::MD5.hexdigest(tikz_code)
+      hash = Digest::MD5.hexdigest("#{preamble}\n#{tikz_code}")
       @used_hashes << hash
 
       tmp_dir = File.join(source_dir, "_tikz_tmp")
@@ -49,7 +54,7 @@ module Jekyll
       FileUtils.mkdir_p(svg_dir)
 
       tex_file = File.join(tmp_dir, "#{hash}.tex")
-      dvi_file = File.join(tmp_dir, "#{hash}.dvi")
+      pdf_file = File.join(tmp_dir, "#{hash}.pdf")
       svg_file = File.join(svg_dir, "#{hash}.svg")
 
       # If SVG already exists, reuse it (caching).
@@ -58,7 +63,10 @@ module Jekyll
       tex_content = <<~TEX
         \\documentclass[tikz,border=2pt]{standalone}
         \\usepackage{tikz}
+        \\usepackage{tikz-3dplot}
+        \\usepackage{xcolor}
         \\begin{document}
+        #{preamble}
         \\begin{tikzpicture}
         #{tikz_code}
         \\end{tikzpicture}
@@ -68,15 +76,15 @@ module Jekyll
       File.write(tex_file, tex_content)
 
       Dir.chdir(tmp_dir) do
-        # Run LaTeX to produce a .dvi. Log an error and return empty string on failure.
-        unless system("latex", "-interaction=nonstopmode", "-halt-on-error", File.basename(tex_file))
-          Jekyll.logger.error "TikZ Plugin:", "LaTeX compile failed for TikZ block (#{hash})"
+        # Run pdflatex to produce a .pdf. Log an error and return empty string on failure.
+        unless system("pdflatex", "-interaction=nonstopmode", "-halt-on-error", File.basename(tex_file))
+          Jekyll.logger.error "TikZ Plugin:", "PDFLaTeX compile failed for TikZ block (#{hash})"
           return ""
         end
 
-        # Convert DVI to SVG. The --no-fonts option inlines glyphs to avoid external font dependencies.
-        unless system("dvisvgm", "--no-fonts", "-n", "-o", svg_file, File.basename(dvi_file))
-          Jekyll.logger.error "TikZ Plugin:", "dvisvgm failed for TikZ block (#{hash})"
+        # Convert PDF to SVG using pdf2svg.
+        unless system("pdf2svg", File.basename(pdf_file), svg_file)
+          Jekyll.logger.error "TikZ Plugin:", "pdf2svg failed for TikZ block (#{hash})"
           return ""
         end
       end
@@ -92,8 +100,8 @@ Jekyll::Hooks.register :site, :post_write do |site|
   svg_dir = File.join(site.source, "assets", "tikz")
   used_hashes = site.config["tikz_used_hashes"] || []
 
-  # Remove stale temporary files (tex, aux, log, dvi) that are not referenced by current site content.
-  Dir.glob(File.join(tmp_dir, "*.{tex,aux,log,dvi}")).each do |path|
+  # Remove stale temporary files (tex, aux, log, pdf) that are not referenced by current site content.
+  Dir.glob(File.join(tmp_dir, "*.{tex,aux,log,pdf}")).each do |path|
     hash = File.basename(path, File.extname(path))
     FileUtils.rm_f(path) unless used_hashes.include?(hash)
   end

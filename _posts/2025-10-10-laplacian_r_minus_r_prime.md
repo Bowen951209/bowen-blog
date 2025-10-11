@@ -12,7 +12,7 @@ $$
 $$
 
 
-# Method 1 --- Brute Force
+# Method 1 --- Cartesian Coordinates
 
 Let's first look at 
 $$\nabla (\frac{1}{|\vec r - \vec r'|})$$. Let
@@ -114,9 +114,40 @@ $$
 
 
 $$
-\begin{tikzpicture}[scale=2.0]
-  \draw [red] (0:1) arc [radius=1, start angle=0, end angle=120];
-  \draw [green] (120:1) arc [radius=1, start angle=120, end angle=240];
-  \draw [blue] (240:1) arc [radius=1, start angle=240, end angle=360];
+\tdplotsetmaincoords{60}{120}
+\begin{tikzpicture}[tdplot_main_coords,scale=2]
+
+\shade[ball color = gray!40, opacity = 0.3] (0,0) circle (1cm);
+  \draw (0,0) circle (1cm);
+
+% Place arrows throughout a grid (excluding origin and outside sphere)
+\foreach \x in {-1,-0.5,0,0.5,1}
+  \foreach \y in {-1,-0.5,0,0.5,1}
+    \foreach \z in {-1,-0.5,0,0.5,1}
+      {
+        \pgfmathsetmacro{\r}{sqrt(\x*\x+\y*\y+\z*\z)}
+        \ifdim\r pt > 0.2pt
+          \ifdim\r pt < 1.1pt
+            % Arrow length scaled for illustration
+            \pgfmathsetmacro{\len}{0.25/(\r*\r)}
+            % Arrow endpoint
+            \pgfmathsetmacro{\xe}{\x*\len}
+            \pgfmathsetmacro{\ye}{\y*\len}
+            \pgfmathsetmacro{\ze}{\z*\len}
+
+            \draw[->,line width=0.7pt, color=cyan] 
+              (\x,\y,\z) -- ++(\xe,\ye,\ze);
+          \fi
+        \fi
+      }
+
+    % Draw axes
+\draw[->,thick] (0,0,0) -- (1.5,0,0) node[anchor=north east]{$x$};
+\draw[->,thick] (0,0,0) -- (0,1.5,0) node[anchor=west]{$y$};
+\draw[->,thick] (0,0,0) -- (0,0,1.5) node[anchor=south]{$z$};
+
+\shade[ball color = red] (0,0) circle (0.05cm);
+  \draw (0,0) circle (0.05cm);
+
 \end{tikzpicture}
 $$

@@ -17,20 +17,20 @@ sed -i -E "s/^(plugins=\()(git)(\))/\1\2 zsh-syntax-highlighting zsh-autosuggest
 # Avoid git log use less
 echo -e "\nunset LESS" >>~/.zshrc
 
-# Install TeX + dvisvgm if not present
-if ! command -v latex >/dev/null 2>&1 || ! command -v dvisvgm >/dev/null 2>&1; then
-  echo "Installing TeX and dvisvgm..."
+# Install TeX + pdf2svg if not present
+if ! command -v latex >/dev/null 2>&1 || ! command -v pdf2svg >/dev/null 2>&1; then
+  echo "Installing TeX and pdf2svg..."
   export DEBIAN_FRONTEND=noninteractive
   sudo apt-get update
   sudo apt-get install -y --no-install-recommends \
     texlive-latex-base \
     texlive-latex-extra \
     texlive-fonts-recommended \
-    dvisvgm
+    pdf2svg
   sudo apt-get clean
   sudo rm -rf /var/lib/apt/lists/*
 else
-  echo "latex and dvisvgm already installed"
+  echo "latex and pdf2svg already installed"
 fi
 
 # Install Node.js (Node 18) with NodeSource if not present
