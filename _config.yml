@@ -165,6 +165,10 @@ kramdown:
 
 jektex:
   cache_dir: ".jektex-cache"
+  macros:
+    - ["\\ihat", "\\hat{\\textbf{\\i}}"]
+    - ["\\jhat", "\\hat{\\textbf{\\j}}"]
+    - ["\\khat", "\\hat{\\textbf{k}}"]
 
 collections:
   tabs:
