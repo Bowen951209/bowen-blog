@@ -89,6 +89,11 @@ module Jekyll
         end
       end
 
+      # Ensure Jekyll knows about this newly generated SVG so it gets copied to _site/
+      unless @site.static_files.any? { |f| f.relative_path == "/assets/tikz/#{hash}.svg" }
+        @site.static_files << Jekyll::StaticFile.new(@site, source_dir, File.join("assets", "tikz"), "#{hash}.svg")
+      end
+
       svg_file
     end
   end
