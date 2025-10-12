@@ -33,8 +33,8 @@ module Jekyll
           preamble = $1.strip
           tikz_body = $2.strip
           svg_path = generate_svg(tikz_body, source_dir, preamble)
-          svg_code = File.exist?(svg_path) ? File.read(svg_path) : ""
-          "<div class='tikz-svg'>#{svg_code}</div>"
+          svg_url = File.exist?(svg_path) ? File.join('/assets/tikz', File.basename(svg_path)) : ""
+          "<div class='tikz-svg'><img src='#{svg_url}' alt='TikZ SVG' /></div>"
         else
           "$$#{inner}$$"
         end
