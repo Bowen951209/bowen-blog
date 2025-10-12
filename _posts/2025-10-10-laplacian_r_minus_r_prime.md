@@ -109,7 +109,7 @@ $$
 And the offset version
 
 $$
-\nabla^2 \frac{1}{|\vec r - \vec r'|} = -4\pi\,\delta^3(\vec r - \vec r'),
+\nabla^2 \frac{1}{|\vec r - \vec r'|} = -4\pi\,\delta^3(\vec r - \vec r').
 $$
 
 
