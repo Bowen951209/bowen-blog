@@ -40,8 +40,8 @@ $$
 = \iiint_V \nabla \cdot (f \vec A) dV
 = \iiint_V \nabla f \cdot \vec A dV + \iiint_V f \left(\nabla \cdot \vec A\right) dV\\
 &\Leftrightarrow
-\iiint_V f \left(\nabla \cdot \vec A\right) dV
-= \oiint_{\partial V} f \vec A \cdot d \vec S - \iiint_V \nabla f \cdot \vec A dV.
+\boxed{\iiint_V f \left(\nabla \cdot \vec A\right) dV
+= \oiint_{\partial V} f \vec A \cdot d \vec S - \iiint_V \nabla f \cdot \vec A dV.}
 \end{align}
 $$
 
@@ -62,8 +62,8 @@ $$
 \oint_{\partial S} f \vec A \cdot d\vec l
 &= \iint_S \nabla \times (f \vec A) \cdot d\vec S \\
 &= \iint_S (\nabla f \times \vec A) \cdot d\vec S + \iint_S f (\nabla \times \vec A) \cdot d\vec S \\
-&\Leftrightarrow
-\iint_S f (\nabla \times \vec A) \cdot d\vec S
+\Leftrightarrow
+&\iint_S f (\nabla \times \vec A) \cdot d\vec S
 = \oint_{\partial S} f \vec A \cdot d\vec l - \iint_S (\nabla f \times \vec A) \cdot d\vec S.
 \end{align}
 $$
@@ -77,7 +77,31 @@ $$
 We get
 
 $$
+\boxed{
 \iint_S f (\nabla \times \vec A) \cdot d\vec S
 = \oint_{\partial S} f \vec A \cdot d\vec l
-+ \iint_S (\vec A \times \nabla f) \cdot d\vec S.
++ \iint_S (\vec A \times \nabla f) \cdot d\vec S.}
+$$
+
+---
+
+$$\iiint_V \vec B \cdot (\nabla \times \vec A) dV = ?$$
+
+Using the product rule (I skip the proccess here), we can show that
+
+$$
+\nabla \cdot (\vec A \times \vec B)
+= \vec B \cdot (\nabla \times \vec A) - \vec A \cdot (\nabla \times \vec B).
+$$
+
+Integrate both sides over a volume $$V$$ and use the divergence theorem to get
+
+$$
+\begin{align}
+\oiint_{\partial V} (\vec A \times \vec B) \cdot d \vec S
+&= \iiint_V \nabla \cdot (\vec A \times \vec B) dV\\
+&=\iiint_V B \cdot (\nabla \times \vec A) dV - \iiint_V A \cdot (\nabla \times \vec B) dV\\
+\end{align}\\
+\Leftrightarrow
+\boxed{\iiint_V B \cdot (\nabla \times \vec A) dV = \oiint_{\partial V} (\vec A \times \vec B) \cdot d \vec S + \iiint_V A \cdot (\nabla \times \vec B) dV.}
 $$
