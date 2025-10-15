@@ -11,7 +11,7 @@ $$
 I = \int_a^\infty f(x) dx.
 $$
 
-I will show that for the integral to coverge (exist), $$f(x)$$ must decline *faster* than $$1/x$$ for large $$x$$.
+I will show that for the integral to coverge (exist), $$f(x)$$ must decline *faster* than $$1/x$$ for large $$x$$. *(This only works for monotonically decaying functions. Functions like $$\frac{\sin x}{x}$$ or $$\sin(x^2)$$ won't apply. My note is very unrigorous.)*
 
 We can split an integral into two parts:
 
@@ -53,8 +53,12 @@ $$
 \lim_{x \to \infty}x^{1+p} = 0 \implies\int_b^\infty x^p dx = -\frac{b^{1+p}}{1+p} = \text{constant}.
 $$
 
-We thus proved that, for an integral $$\int_a^\infty f(x) dx$$ to converge, we must have
+We thus proved that, for an integral $$\int_a^\infty f(x) dx$$ to converge, plus $$f(x)$$ is monotonically decaying function, we must have
 
 $$
-f(x) \sim \frac{1}{x^a}, a > 1, \text{for large x}.
+f(x) \sim \frac{1}{x^a}, a > 1, \text{for large $x$}.
 $$
+
+### What one cannot conclude without extra hypotheses
+
+One cannot in general deduce that "$$f(x)$$ decays faster than $$1/x$$" from the convergence of $$\int_a^{\infty} f(x) dx $$ alone. For example, if $$f$$ oscillates (e.g. $$f(x)=\sin x/x$$) or if $$f$$ has sparse narrow spikes whose areas sum to a finite total, the integral may converge while $$x f(x)$$ does not tend to zero.
