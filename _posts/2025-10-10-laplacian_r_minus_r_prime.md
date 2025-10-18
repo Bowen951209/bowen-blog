@@ -53,12 +53,12 @@ $$
 The divergence is to adding them up, which is
 
 $$
-\begin{align}
+\begin{align*}
 &\frac{-|\vec r - \vec r'|^3 + 3|\vec r - \vec r'|\left((x'-x)^2+(y'-y)^2+(z'-z)^2\right)}{|\vec r - \vec r'|^6} \\
 &= \frac{-|\vec r - \vec r'|^3 + 3|\vec r - \vec r'|\cdot |\vec r - \vec r'|^2}{|\vec r - \vec r'|^6}\\
 &= \frac{-|\vec r - \vec r'|^3 + 3|\vec r - \vec r'|^3}{|\vec r - \vec r'|^6} \\
 &= 0. \quad \text{(For $|\vec r - \vec r'| \neq 0$)}
-\end{align}
+\end{align*}
 $$
 
 We thus get for 
