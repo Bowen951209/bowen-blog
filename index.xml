@@ -10,7 +10,7 @@
 <atom:link href="https://bowen951209.github.io/bowen-blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog built with Quarto</description>
 <generator>quarto-1.9.36</generator>
-<lastBuildDate>Thu, 26 Mar 2026 16:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 27 Mar 2026 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Post With Code</title>
   <dc:creator>Harlow Malloc</dc:creator>
@@ -30,7 +30,7 @@
   <category>code</category>
   <category>analysis</category>
   <guid>https://bowen951209.github.io/bowen-blog/posts/post-with-code/</guid>
-  <pubDate>Thu, 26 Mar 2026 16:00:00 GMT</pubDate>
+  <pubDate>Fri, 27 Mar 2026 00:00:00 GMT</pubDate>
   <media:content url="https://bowen951209.github.io/bowen-blog/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
@@ -52,7 +52,7 @@
  ]]></description>
   <category>news</category>
   <guid>https://bowen951209.github.io/bowen-blog/posts/welcome/</guid>
-  <pubDate>Mon, 23 Mar 2026 16:00:00 GMT</pubDate>
+  <pubDate>Tue, 24 Mar 2026 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
