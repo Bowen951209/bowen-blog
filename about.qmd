@@ -2,18 +2,11 @@
 title: "About"
 image: profile.jpg
 about:
-  template: jolla
-  links:
-    - icon: bluesky
-      text: Bluesky
-      href: https://bsky.app/
-    - icon: linkedin
-      text: LinkedIn
-      href: https://linkedin.com
-    - icon: github
-      text: Github
-      href: https://github.com
-
+  template: marquee
 ---
 
-About this blog
+Hi! My name is Bowen Ho. I am from Taiwan. Currently studying in 
+[National Chung Hsing University](https://www.nchu.edu.tw/index1.php)
+as an undergraduate at the department of civil engineering.
+
+- E-mail: bowen951209@gmail.com
