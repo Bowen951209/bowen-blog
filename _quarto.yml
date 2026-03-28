@@ -2,20 +2,18 @@ project:
   type: website
 
 website:
-  description: "A blog built with Quarto"
+  description: "Bowen Ho's blog"
   site-url: https://bowen951209.github.io/bowen-blog/
-  title: "blog"
+  title: "Bowen Ho's blog"
   navbar:
     right:
       - about.qmd
       - icon: github
-        href: https://github.com/
-      - icon: bluesky
-        href: https://bsky.app/
+        href: https://github.com/Bowen951209
 format:
   html:
     theme:
-      - cosmo
+      - cyborg
       - brand
     css: styles.css
 
