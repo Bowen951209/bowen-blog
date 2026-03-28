@@ -1,30 +1,93 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "posts/broken_audio/index.html",
+    "href": "posts/broken_audio/index.html",
+    "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
     "section": "",
-    "text": "About this blog"
+    "text": "Here’s an audio I got. It played normally on my PC, but sounded broken when playing on my phone. Try to play it on your devices and see if you encounter the same issue as mine."
   },
   {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
+    "objectID": "posts/broken_audio/index.html#the-problem",
+    "href": "posts/broken_audio/index.html#the-problem",
+    "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
     "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+    "text": "Here’s an audio I got. It played normally on my PC, but sounded broken when playing on my phone. Try to play it on your devices and see if you encounter the same issue as mine."
   },
   {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
-    "section": "",
-    "text": "This is a post with executable code."
+    "objectID": "posts/broken_audio/index.html#why-did-that-happen-destructive-interference",
+    "href": "posts/broken_audio/index.html#why-did-that-happen-destructive-interference",
+    "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
+    "section": "Why did that happen? — Destructive Interference",
+    "text": "Why did that happen? — Destructive Interference\nAfter diving into this problem, in my case, I found that it was caused by a physical phenomenon called destructive interference. Interferences are divided into two types — constructive and destructive. When multiple waves add together, they interfere with each other. The final wave is equal to the addition of those waves. When all the waves are identity, the final wave will sound as same as the original, but the amplitude is bigger, which makes the sound louder, and that is the constructive interference. On the contrary, if two waves are opposite (one’s crest happens at another’s trough), the addition of them becomes a flat pattern, making no sound, which is called the destructive interference.\nHere is a figure showing this:\n\n\n\ninterference\n\n\nsource\nThe waveform screenshot of my audio in iZotope RX 10:  You can see that the two waves are almost completely opposite.\nAs you may have known, most of the audios contain two sound channels — the left and the right. And somehow some encoding errors happened, and the two channels became opposite, which eventually causes the destructive interference if the speakers are put at a specific angle and position."
+  },
+  {
+    "objectID": "posts/broken_audio/index.html#how-to-fix",
+    "href": "posts/broken_audio/index.html#how-to-fix",
+    "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
+    "section": "How to Fix?",
+    "text": "How to Fix?\nOf course, you can re-record it from other devices that don’t have an interference, but I want to show you how to fix it in an audio editor. I’ll do it in RX10. If you don’t have the software, others like Audacity should be similar.\n\nSelect one of the channels and copy it with Ctrl + C\n\n\n\ncopying\n\n\n\n\nDelete both channel\n\n\n\ndeleting\n\n\n\n\nSelect both channel and paste with Ctrl + V\n As you can see, the two waves are now identity.\n\n\nExport the audio and done\n Export with whatever settings you want."
+  },
+  {
+    "objectID": "posts/broken_audio/index.html#story-about-the-audio",
+    "href": "posts/broken_audio/index.html#story-about-the-audio",
+    "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
+    "section": "Story About The Audio",
+    "text": "Story About The Audio\nThis audio came from my Chinese teacher. It was a poem called 錯誤, sung by his classmate when he was a high school student. The classmate, singer of this audio, has a miserable story. She was a victim of the “White Terror” in Taiwan. Her dad was sent to jail, and her relatives kept distance from her family. When we learned this poem in the Chinese class, our teacher shared this song to us. Sadly, it wasn’t able to play through our classroom’s speakers.\nI’ve once listened to a music on YouTube, and it had the same problem that my PC played fine, but my phone played with broken sound. I can’t find it now, but the teacher’s audio seemed to have a same problem. I was really curious about what the problem is, wanting to fix the audio. A day when I was taking a nap, there was a flash of inspiration, I tested it, and it really was that cause. So I wrote this post hoping that someone encountered the same problem can have a solution."
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "blog",
+    "title": "Bowen Ho’s blog",
     "section": "",
-    "text": "Post With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nMar 27, 2026\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nMar 24, 2026\n\n\nTristan O’Malley\n\n\n\n\n\nNo matching items"
+    "text": "Date\n\n\n\nTitle\n\n\n\nAuthor\n\n\n\n\n\n\n\n\nMar 29, 2024\n\n\nFixing a broken audio that sounds normal on some devices but broken on others\n\n\n \n\n\n\n\n\n\nMar 21, 2024\n\n\nExporting a video with an alpha channel using JavaCV\n\n\n \n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Hi! My name is Bowen Ho. I am from Taiwan. Currently studying in National Chung Hsing University as an undergraduate at the department of civil engineering.\n\nE-mail: bowen951209@gmail.com"
+  },
+  {
+    "objectID": "posts/trans_video/index.html",
+    "href": "posts/trans_video/index.html",
+    "title": "Exporting a video with an alpha channel using JavaCV",
+    "section": "",
+    "text": "A video with an alpha channel is convenient when we’re doing some clip editing. For me, I’d like to use that for karaoke videos, which has a karaoke animation video source on the top layer, and the background images on the bottom layer. When we overlay them in editing software, it’d look like this:"
+  },
+  {
+    "objectID": "posts/trans_video/index.html#transparency",
+    "href": "posts/trans_video/index.html#transparency",
+    "title": "Exporting a video with an alpha channel using JavaCV",
+    "section": "",
+    "text": "A video with an alpha channel is convenient when we’re doing some clip editing. For me, I’d like to use that for karaoke videos, which has a karaoke animation video source on the top layer, and the background images on the bottom layer. When we overlay them in editing software, it’d look like this:"
+  },
+  {
+    "objectID": "posts/trans_video/index.html#things-about-video-codecs",
+    "href": "posts/trans_video/index.html#things-about-video-codecs",
+    "title": "Exporting a video with an alpha channel using JavaCV",
+    "section": "Things about video codecs",
+    "text": "Things about video codecs\nOnly some special video codecs support alpha channels. The most used are:\n\n\n\n\n\n\n\n\n\nCodecs\nThe pixel format that includes alpha\nAvailable Containers\nSupported by PowerDirector\n\n\n\n\nffv1 (FFmpeg video codec #1)\nbgra\nAVI, MKV, MOV, NUT, …\n❌\n\n\nqtrle (QuickTime Animation (RLE) video)\nargb\nMOV\n❌\n\n\nPNG\nrgba\nMOV\n✅\n\n\n\nAbove is the information I got on the Internet, not sure if there are more available containers, but the MOV is tested and is sure to work. (find more info here)\nTo see what pixel formats a codec supports with ffmpeg, run this command: (for the qtrle case)\nffmpeg -h encoder=qtrle\nI’m using PowerDirector as the editing software, and it doesn’t support the ffv1 and qtrle transparent videos. After my test, it seems like PowerDirector only supports the PNG codec."
+  },
+  {
+    "objectID": "posts/trans_video/index.html#png",
+    "href": "posts/trans_video/index.html#png",
+    "title": "Exporting a video with an alpha channel using JavaCV",
+    "section": "PNG?",
+    "text": "PNG?\nYes, PNG could be a video codec. Unlike others, PNG codec simply stores every single frame’s data without compression, which makes the file size huge compared to common codecs like h.265."
+  },
+  {
+    "objectID": "posts/trans_video/index.html#implementation",
+    "href": "posts/trans_video/index.html#implementation",
+    "title": "Exporting a video with an alpha channel using JavaCV",
+    "section": "Implementation",
+    "text": "Implementation\nLet’s output a video with a PNG codec and MOV format using the FFmpegFrameRecorder in JavaCV, and I’ll show you how to do it with Java BufferedImage.\nOther codecs can be applied easily, just be careful to use the corresponding pixel formats. (Only the essential part of the code displayed here.)\n// Setup a converter for coverting a buffered image to the accepted Frame format.\nJava2DFrameConverter java2DFrameConverter = new Java2DFrameConverter();\n\n// Setup the buffered image you want to record.\nBufferedImage bufferedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);\n\n// Draw something on the buffered image.\nGraphics2D imgG2d = (Graphics2D) bufferedImage.getGraphics();\nimgG2d.fillRect(...);\n\n// Setup the frame recorder.\nFFmpegFrameRecorder frameRecorder = new FFmpegFrameRecorder(...);\nframeRecorder.setFrameRate(...);\nframeRecorder.setVideoBitrate(...);\nframeRecorder.setVideoCodec(avcodec.AV_CODEC_ID_PNG);\nframeRecorder.setPixelFormat(avutil.AV_PIX_FMT_RGBA);\nframeRecorder.setFormat(\"mov\");\n\ntry {\n   frameRecorder.start();\n\n   for(...){\n      Frame frame = java2DFrameConverter.getFrame(bufferedImage);\n      frameRecorder.record(frame, AV_PIX_FMT_ARGB);\n   } \n} catch(...) {\n    ...\n}\n\nframeRecorder.close();\nIt’s done. You can now output your own transparent videos!\nHere are screenshots of comparison of our outputted video vs. Sayatoo’s vs. H265 common. # Our Format"
+  },
+  {
+    "objectID": "posts/trans_video/index.html#references",
+    "href": "posts/trans_video/index.html#references",
+    "title": "Exporting a video with an alpha channel using JavaCV",
+    "section": "References",
+    "text": "References\n\nhttps://superuser.com/questions/1505679/lossless-video-codec-supporting-alpha-channels?newreg=368280d984fb4b76889136daf35a942c\nhttps://en.wikipedia.org/wiki/FFV1"
   }
 ]

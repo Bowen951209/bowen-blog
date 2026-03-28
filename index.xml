@@ -5,54 +5,428 @@
       xmlns:dc="http://purl.org/dc/elements/1.1/" 
       version="2.0">
 <channel>
-<title>blog</title>
+<title>Bowen Ho&#39;s blog</title>
 <link>https://bowen951209.github.io/bowen-blog/</link>
 <atom:link href="https://bowen951209.github.io/bowen-blog/index.xml" rel="self" type="application/rss+xml"/>
-<description>A blog built with Quarto</description>
+<description>Bowen Ho&#39;s blog</description>
 <generator>quarto-1.9.36</generator>
-<lastBuildDate>Thu, 26 Mar 2026 16:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 29 Mar 2024 00:00:00 GMT</lastBuildDate>
 <item>
-  <title>Post With Code</title>
-  <dc:creator>Harlow Malloc</dc:creator>
-  <link>https://bowen951209.github.io/bowen-blog/posts/post-with-code/</link>
+  <title>Fixing a broken audio that sounds normal on some devices but broken on others</title>
+  <link>https://bowen951209.github.io/bowen-blog/posts/broken_audio/</link>
   <description><![CDATA[ 
 
 
 
 
 
-<p>This is a post with executable code.</p>
+<section id="the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
+<p>Here’s an audio I <a href="https://drive.google.com/file/d/19lPfO9cObfgaboDs60bwRG0c7Gg-69Wb/view?usp=sharing">got</a>. It played normally on my PC, but sounded broken when playing on my phone. Try to play it on your devices and see if you encounter the same issue as mine.</p>
+</section>
+<section id="why-did-that-happen-destructive-interference" class="level2">
+<h2 class="anchored" data-anchor-id="why-did-that-happen-destructive-interference">Why did that happen? — Destructive Interference</h2>
+<p>After diving into this problem, in my case, I found that it was caused by a physical phenomenon called <strong>destructive interference</strong>. Interferences are divided into two types — constructive and destructive. When multiple waves add together, they interfere with each other. The final wave is equal to the addition of those waves. When all the waves are identity, the final wave will sound as same as the original, but the amplitude is bigger, which makes the sound louder, and that is the constructive interference. On the contrary, if two waves are opposite (one’s crest happens at another’s trough), the addition of them becomes a flat pattern, making no sound, which is called the destructive interference.</p>
+<p>Here is a figure showing this:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://bowen951209.github.io/bowen-blog/posts/broken_audio/interference.jpg" class="img-fluid figure-img"></p>
+<figcaption>interference</figcaption>
+</figure>
+</div>
+<p><a href="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fkids.britannica.com%2Fstudents%2Fassembly%2Fview%2F53869&amp;psig=AOvVaw33kaGuH7MmnhUDcbA5C7f3&amp;ust=1711793717527000&amp;source=images&amp;cd=vfe&amp;opi=89978449&amp;ved=0CBIQjRxqFwoTCNiT9tuemYUDFQAAAAAdAAAAABAE">source</a></p>
+<p>The waveform screenshot of my audio in iZotope RX 10: <img src="https://bowen951209.github.io/bowen-blog/posts/broken_audio/oWave.jpg" class="img-fluid" alt="waveform"> You can see that the two waves are almost completely opposite.</p>
+<p>As you may have known, most of the audios contain two sound channels — the left and the right. And somehow some encoding errors happened, and the two channels became opposite, which eventually causes the destructive interference if the speakers are put at a specific angle and position.</p>
+</section>
+<section id="how-to-fix" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-fix">How to Fix?</h2>
+<p>Of course, you can re-record it from other devices that don’t have an interference, but I want to show you how to fix it in an audio editor. I’ll do it in RX10. If you don’t have the software, others like <a href="https://www.audacityteam.org/">Audacity</a> should be similar.</p>
+<section id="select-one-of-the-channels-and-copy-it-with-ctrl-c" class="level3">
+<h3 class="anchored" data-anchor-id="select-one-of-the-channels-and-copy-it-with-ctrl-c">Select one of the channels and copy it with Ctrl + C</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://bowen951209.github.io/bowen-blog/posts/broken_audio/copying.jpg" class="img-fluid figure-img"></p>
+<figcaption>copying</figcaption>
+</figure>
+</div>
+</section>
+<section id="delete-both-channel" class="level3">
+<h3 class="anchored" data-anchor-id="delete-both-channel">Delete both channel</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://bowen951209.github.io/bowen-blog/posts/broken_audio/deleting.jpg" class="img-fluid figure-img"></p>
+<figcaption>deleting</figcaption>
+</figure>
+</div>
+</section>
+<section id="select-both-channel-and-paste-with-ctrl-v" class="level3">
+<h3 class="anchored" data-anchor-id="select-both-channel-and-paste-with-ctrl-v">Select both channel and paste with Ctrl + V</h3>
+<p><img src="https://bowen951209.github.io/bowen-blog/posts/broken_audio/pasting.jpg" class="img-fluid" alt="pasting"> As you can see, the two waves are now identity.</p>
+</section>
+<section id="export-the-audio-and-done" class="level3">
+<h3 class="anchored" data-anchor-id="export-the-audio-and-done">Export the audio and done</h3>
+<p><img src="https://bowen951209.github.io/bowen-blog/posts/broken_audio/exporting.jpg" class="img-fluid" alt="pasting"> Export with whatever settings you want.</p>
+</section>
+</section>
+<section id="story-about-the-audio" class="level2">
+<h2 class="anchored" data-anchor-id="story-about-the-audio">Story About The Audio</h2>
+<p>This audio came from my Chinese teacher. It was a poem called <strong>錯誤</strong>, sung by his classmate when he was a high school student. The classmate, singer of this audio, has a miserable story. She was a victim of the “White Terror” in Taiwan. Her dad was sent to jail, and her relatives kept distance from her family. When we learned this poem in the Chinese class, our teacher shared this song to us. Sadly, it wasn’t able to play through our classroom’s speakers.</p>
+<p>I’ve once listened to a music on YouTube, and it had the same problem that my PC played fine, but my phone played with broken sound. I can’t find it now, but the teacher’s audio seemed to have a same problem. I was really curious about what the problem is, wanting to fix the audio. A day when I was taking a nap, there was a flash of inspiration, I tested it, and it really was that cause. So I wrote this post hoping that someone encountered the same problem can have a solution.</p>
 
 
+</section>
 
  ]]></description>
-  <category>news</category>
-  <category>code</category>
-  <category>analysis</category>
-  <guid>https://bowen951209.github.io/bowen-blog/posts/post-with-code/</guid>
-  <pubDate>Thu, 26 Mar 2026 16:00:00 GMT</pubDate>
-  <media:content url="https://bowen951209.github.io/bowen-blog/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
+  <category>computer</category>
+  <guid>https://bowen951209.github.io/bowen-blog/posts/broken_audio/</guid>
+  <pubDate>Fri, 29 Mar 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
-  <title>Welcome To My Blog</title>
-  <dc:creator>Tristan O&#39;Malley</dc:creator>
-  <link>https://bowen951209.github.io/bowen-blog/posts/welcome/</link>
+  <title>Exporting a video with an alpha channel using JavaCV</title>
+  <link>https://bowen951209.github.io/bowen-blog/posts/trans_video/</link>
   <description><![CDATA[ 
 
 
 
 
 
-<p>This is the first post in a Quarto blog. Welcome!</p>
-<p><img src="https://bowen951209.github.io/bowen-blog/posts/welcome/thumbnail.jpg" class="img-fluid"></p>
-<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
+<section id="transparency" class="level2">
+<h2 class="anchored" data-anchor-id="transparency">Transparency</h2>
+<p>A video with an alpha channel is convenient when we’re doing some clip editing. For me, I’d like to use that for karaoke videos, which has a karaoke animation video source on the top layer, and the background images on the bottom layer. When we overlay them in editing software, it’d look like this: <img src="https://bowen951209.github.io/bowen-blog/posts/trans_video/karaoke1.png" class="img-fluid" alt="a karaoke video frame"></p>
+</section>
+<section id="things-about-video-codecs" class="level2">
+<h2 class="anchored" data-anchor-id="things-about-video-codecs">Things about video codecs</h2>
+<p>Only some special video codecs support alpha channels. The most used are:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 29%">
+<col style="width: 18%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Codecs</th>
+<th>The pixel format that includes alpha</th>
+<th>Available Containers</th>
+<th>Supported by PowerDirector</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ffv1 (FFmpeg video codec #1)</td>
+<td>bgra</td>
+<td>AVI, MKV, MOV, NUT, …</td>
+<td>❌</td>
+</tr>
+<tr class="even">
+<td>qtrle (QuickTime Animation (RLE) video)</td>
+<td>argb</td>
+<td>MOV</td>
+<td>❌</td>
+</tr>
+<tr class="odd">
+<td><strong><em>PNG</em></strong></td>
+<td>rgba</td>
+<td>MOV</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<p>Above is the information I got on the Internet, not sure if there are more available containers, but the MOV is tested and is sure to work. (find more info <a href="https://superuser.com/questions/1505679/lossless-video-codec-supporting-alpha-channels?newreg=368280d984fb4b76889136daf35a942c">here</a>)</p>
+<p>To see what pixel formats a codec supports with ffmpeg, run this command: (for the qtrle case)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">ffmpeg</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-h</span> encoder=qtrle</span></code></pre></div></div>
+<p>I’m using PowerDirector as the editing software, and it doesn’t support the ffv1 and qtrle transparent videos. After my test, it seems like PowerDirector only supports the PNG codec.</p>
+</section>
+<section id="png" class="level2">
+<h2 class="anchored" data-anchor-id="png">PNG?</h2>
+<p>Yes, PNG could be a video codec. Unlike others, PNG codec simply stores every single frame’s data without compression, which makes the file size huge compared to common codecs like h.265.</p>
+</section>
+<section id="implementation" class="level2">
+<h2 class="anchored" data-anchor-id="implementation">Implementation</h2>
+<p>Let’s output a video with a PNG codec and MOV format using the <code>FFmpegFrameRecorder</code> in JavaCV, and I’ll show you how to do it with Java <code>BufferedImage</code>.</p>
+<p>Other codecs can be applied easily, just be careful to use the corresponding pixel formats. (Only the essential part of the code displayed here.)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Setup a converter for coverting a buffered image to the accepted Frame format.</span></span>
+<span id="cb2-2">Java2DFrameConverter java2DFrameConverter <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Java2DFrameConverter</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">();</span></span>
+<span id="cb2-3"></span>
+<span id="cb2-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Setup the buffered image you want to record.</span></span>
+<span id="cb2-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">BufferedImage</span> bufferedImage <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">new</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">BufferedImage</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>w<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> h<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">BufferedImage</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">TYPE_INT_ARGB</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">);</span></span>
+<span id="cb2-6"></span>
+<span id="cb2-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Draw something on the buffered image.</span></span>
+<span id="cb2-8"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">Graphics2D</span> imgG2d <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">Graphics2D</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> bufferedImage<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">getGraphics</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">();</span></span>
+<span id="cb2-9">imgG2d<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fillRect</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">...</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">);</span></span>
+<span id="cb2-10"></span>
+<span id="cb2-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Setup the frame recorder.</span></span>
+<span id="cb2-12">FFmpegFrameRecorder frameRecorder <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">FFmpegFrameRecorder</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">...</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">);</span></span>
+<span id="cb2-13">frameRecorder<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setFrameRate</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">...</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">);</span></span>
+<span id="cb2-14">frameRecorder<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setVideoBitrate</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">...</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">);</span></span>
+<span id="cb2-15">frameRecorder<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setVideoCodec</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>avcodec<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">AV_CODEC_ID_PNG</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">);</span></span>
+<span id="cb2-16">frameRecorder<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setPixelFormat</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>avutil<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">AV_PIX_FMT_RGBA</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">);</span></span>
+<span id="cb2-17">frameRecorder<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setFormat</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"mov"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">);</span></span>
+<span id="cb2-18"></span>
+<span id="cb2-19"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">try</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-20">   frameRecorder<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">start</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">();</span></span>
+<span id="cb2-21"></span>
+<span id="cb2-22">   <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">...</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">){</span></span>
+<span id="cb2-23">      <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">Frame</span> frame <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> java2DFrameConverter<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">getFrame</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>bufferedImage<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">);</span></span>
+<span id="cb2-24">      frameRecorder<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">record</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>frame<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> AV_PIX_FMT_ARGB<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">);</span></span>
+<span id="cb2-25">   <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span> </span>
+<span id="cb2-26"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">catch</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">...</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-27">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">...</span></span>
+<span id="cb2-28"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb2-29"></span>
+<span id="cb2-30">frameRecorder<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">close</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">();</span></span></code></pre></div></div>
+<p>It’s done. You can now output your own transparent videos!</p>
+<p>Here are screenshots of comparison of <strong>our</strong> outputted video vs.&nbsp;<strong>Sayatoo’s</strong> vs.&nbsp;<strong>H265 common</strong>. # Our Format<br>
+<img src="https://bowen951209.github.io/bowen-blog/posts/trans_video/formatOfOurs.jpg" class="img-fluid" alt="ours"></p>
+</section>
+<section id="sayatoos-format" class="level1">
+<h1>Sayatoo’s Format</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://bowen951209.github.io/bowen-blog/posts/trans_video/formatOfSayatoo.jpg" class="img-fluid figure-img"></p>
+<figcaption>sayatoo</figcaption>
+</figure>
+</div>
+</section>
+<section id="h265-common-format" class="level1">
+<h1>H265 Common Format</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://bowen951209.github.io/bowen-blog/posts/trans_video/commonFormatH265.jpg" class="img-fluid figure-img"></p>
+<figcaption>h265</figcaption>
+</figure>
+</div>
+</section>
+<section id="why-i-wrote-this-post" class="level1">
+<h1>Why I wrote this post?</h1>
+<p>I am working on <a href="https://github.com/Bowen951209/open-karaoke-toolkit">a karaoke software project</a>, being confused about exporting a transparent video. In the end, I referenced the Sayatoo, the commercial karaoke software and found that it strangely used PNG as its video input. After a lot of attempts and I finally found that you have to use PNG codec for transparent videos, so that PowerDirector can recognize it.</p>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li><a href="https://superuser.com/questions/1505679/lossless-video-codec-supporting-alpha-channels?newreg=368280d984fb4b76889136daf35a942c" class="uri">https://superuser.com/questions/1505679/lossless-video-codec-supporting-alpha-channels?newreg=368280d984fb4b76889136daf35a942c</a></li>
+<li><a href="https://en.wikipedia.org/wiki/FFV1" class="uri">https://en.wikipedia.org/wiki/FFV1</a></li>
+</ul>
 
 
+</section>
+</section>
 
  ]]></description>
-  <category>news</category>
-  <guid>https://bowen951209.github.io/bowen-blog/posts/welcome/</guid>
-  <pubDate>Mon, 23 Mar 2026 16:00:00 GMT</pubDate>
+  <category>computer</category>
+  <guid>https://bowen951209.github.io/bowen-blog/posts/trans_video/</guid>
+  <pubDate>Thu, 21 Mar 2024 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

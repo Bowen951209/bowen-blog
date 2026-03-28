@@ -6,10 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Tristan O’Malley">
-<meta name="dcterms.date" content="2026-03-24">
+<meta name="dcterms.date" content="2024-03-29">
 
-<title>Welcome To My Blog – blog</title>
+<title>Fixing a broken audio that sounds normal on some devices but broken on others – Bowen Ho’s blog</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -41,10 +40,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-f1fcdd81373b14bea7d035b0719da7f2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-17d1b50e0f264667c44c13fbb863f73c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -85,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">blog</span>
+    <span class="navbar-title">Bowen Ho’s blog</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -99,12 +98,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
-</i> 
-<span class="menu-text"></span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://bsky.app/"> <i class="bi bi-bluesky" role="img">
+    <a class="nav-link" href="https://github.com/Bowen951209"> <i class="bi bi-github" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -119,9 +113,9 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Welcome To My Blog</h1>
+      <h1 class="title">Fixing a broken audio that sounds normal on some devices but broken on others</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">news</div>
+                <div class="quarto-category">computer</div>
               </div>
                   </div>
   </div>
@@ -129,17 +123,11 @@ ul.task-list li input[type="checkbox"] {
   
   <div class="quarto-title-meta">
 
-      <div>
-      <div class="quarto-title-meta-heading">Author</div>
-      <div class="quarto-title-meta-contents">
-               <p>Tristan O’Malley </p>
-            </div>
-    </div>
       
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">March 24, 2026</p>
+        <p class="date">March 29, 2024</p>
       </div>
     </div>
     
@@ -158,11 +146,61 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>This is the first post in a Quarto blog. Welcome!</p>
-<p><img src="thumbnail.jpg" class="img-fluid"></p>
-<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
+<section id="the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
+<p>Here’s an audio I <a href="https://drive.google.com/file/d/19lPfO9cObfgaboDs60bwRG0c7Gg-69Wb/view?usp=sharing">got</a>. It played normally on my PC, but sounded broken when playing on my phone. Try to play it on your devices and see if you encounter the same issue as mine.</p>
+</section>
+<section id="why-did-that-happen-destructive-interference" class="level2">
+<h2 class="anchored" data-anchor-id="why-did-that-happen-destructive-interference">Why did that happen? — Destructive Interference</h2>
+<p>After diving into this problem, in my case, I found that it was caused by a physical phenomenon called <strong>destructive interference</strong>. Interferences are divided into two types — constructive and destructive. When multiple waves add together, they interfere with each other. The final wave is equal to the addition of those waves. When all the waves are identity, the final wave will sound as same as the original, but the amplitude is bigger, which makes the sound louder, and that is the constructive interference. On the contrary, if two waves are opposite (one’s crest happens at another’s trough), the addition of them becomes a flat pattern, making no sound, which is called the destructive interference.</p>
+<p>Here is a figure showing this:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="interference.jpg" class="img-fluid figure-img"></p>
+<figcaption>interference</figcaption>
+</figure>
+</div>
+<p><a href="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fkids.britannica.com%2Fstudents%2Fassembly%2Fview%2F53869&amp;psig=AOvVaw33kaGuH7MmnhUDcbA5C7f3&amp;ust=1711793717527000&amp;source=images&amp;cd=vfe&amp;opi=89978449&amp;ved=0CBIQjRxqFwoTCNiT9tuemYUDFQAAAAAdAAAAABAE">source</a></p>
+<p>The waveform screenshot of my audio in iZotope RX 10: <img src="oWave.jpg" class="img-fluid" alt="waveform"> You can see that the two waves are almost completely opposite.</p>
+<p>As you may have known, most of the audios contain two sound channels — the left and the right. And somehow some encoding errors happened, and the two channels became opposite, which eventually causes the destructive interference if the speakers are put at a specific angle and position.</p>
+</section>
+<section id="how-to-fix" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-fix">How to Fix?</h2>
+<p>Of course, you can re-record it from other devices that don’t have an interference, but I want to show you how to fix it in an audio editor. I’ll do it in RX10. If you don’t have the software, others like <a href="https://www.audacityteam.org/">Audacity</a> should be similar.</p>
+<section id="select-one-of-the-channels-and-copy-it-with-ctrl-c" class="level3">
+<h3 class="anchored" data-anchor-id="select-one-of-the-channels-and-copy-it-with-ctrl-c">Select one of the channels and copy it with Ctrl + C</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="copying.jpg" class="img-fluid figure-img"></p>
+<figcaption>copying</figcaption>
+</figure>
+</div>
+</section>
+<section id="delete-both-channel" class="level3">
+<h3 class="anchored" data-anchor-id="delete-both-channel">Delete both channel</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="deleting.jpg" class="img-fluid figure-img"></p>
+<figcaption>deleting</figcaption>
+</figure>
+</div>
+</section>
+<section id="select-both-channel-and-paste-with-ctrl-v" class="level3">
+<h3 class="anchored" data-anchor-id="select-both-channel-and-paste-with-ctrl-v">Select both channel and paste with Ctrl + V</h3>
+<p><img src="pasting.jpg" class="img-fluid" alt="pasting"> As you can see, the two waves are now identity.</p>
+</section>
+<section id="export-the-audio-and-done" class="level3">
+<h3 class="anchored" data-anchor-id="export-the-audio-and-done">Export the audio and done</h3>
+<p><img src="exporting.jpg" class="img-fluid" alt="pasting"> Export with whatever settings you want.</p>
+</section>
+</section>
+<section id="story-about-the-audio" class="level2">
+<h2 class="anchored" data-anchor-id="story-about-the-audio">Story About The Audio</h2>
+<p>This audio came from my Chinese teacher. It was a poem called <strong>錯誤</strong>, sung by his classmate when he was a high school student. The classmate, singer of this audio, has a miserable story. She was a victim of the “White Terror” in Taiwan. Her dad was sent to jail, and her relatives kept distance from her family. When we learned this poem in the Chinese class, our teacher shared this song to us. Sadly, it wasn’t able to play through our classroom’s speakers.</p>
+<p>I’ve once listened to a music on YouTube, and it had the same problem that my PC played fine, but my phone played with broken sound. I can’t find it now, but the teacher’s audio seemed to have a same problem. I was really curious about what the problem is, wanting to fix the audio. A day when I was taking a nap, there was a flash of inspiration, I tested it, and it really was that cause. So I wrote this post hoping that someone encountered the same problem can have a solution.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -6,10 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Harlow Malloc">
-<meta name="dcterms.date" content="2026-03-27">
+<meta name="dcterms.date" content="2024-03-21">
 
-<title>Post With Code – blog</title>
+<title>Exporting a video with an alpha channel using JavaCV – Bowen Ho’s blog</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -24,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -41,10 +75,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-f1fcdd81373b14bea7d035b0719da7f2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-17d1b50e0f264667c44c13fbb863f73c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -85,7 +119,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">blog</span>
+    <span class="navbar-title">Bowen Ho’s blog</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -99,12 +133,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
-</i> 
-<span class="menu-text"></span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://bsky.app/"> <i class="bi bi-bluesky" role="img">
+    <a class="nav-link" href="https://github.com/Bowen951209"> <i class="bi bi-github" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -119,11 +148,9 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Post With Code</h1>
+      <h1 class="title">Exporting a video with an alpha channel using JavaCV</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">news</div>
-                <div class="quarto-category">code</div>
-                <div class="quarto-category">analysis</div>
+                <div class="quarto-category">computer</div>
               </div>
                   </div>
   </div>
@@ -131,17 +158,11 @@ ul.task-list li input[type="checkbox"] {
   
   <div class="quarto-title-meta">
 
-      <div>
-      <div class="quarto-title-meta-heading">Author</div>
-      <div class="quarto-title-meta-contents">
-               <p>Harlow Malloc </p>
-            </div>
-    </div>
       
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">March 27, 2026</p>
+        <p class="date">March 21, 2024</p>
       </div>
     </div>
     
@@ -160,9 +181,127 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>This is a post with executable code.</p>
+<section id="transparency" class="level2">
+<h2 class="anchored" data-anchor-id="transparency">Transparency</h2>
+<p>A video with an alpha channel is convenient when we’re doing some clip editing. For me, I’d like to use that for karaoke videos, which has a karaoke animation video source on the top layer, and the background images on the bottom layer. When we overlay them in editing software, it’d look like this: <img src="karaoke1.png" class="img-fluid" alt="a karaoke video frame"></p>
+</section>
+<section id="things-about-video-codecs" class="level2">
+<h2 class="anchored" data-anchor-id="things-about-video-codecs">Things about video codecs</h2>
+<p>Only some special video codecs support alpha channels. The most used are:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 29%">
+<col style="width: 18%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Codecs</th>
+<th>The pixel format that includes alpha</th>
+<th>Available Containers</th>
+<th>Supported by PowerDirector</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ffv1 (FFmpeg video codec #1)</td>
+<td>bgra</td>
+<td>AVI, MKV, MOV, NUT, …</td>
+<td>❌</td>
+</tr>
+<tr class="even">
+<td>qtrle (QuickTime Animation (RLE) video)</td>
+<td>argb</td>
+<td>MOV</td>
+<td>❌</td>
+</tr>
+<tr class="odd">
+<td><strong><em>PNG</em></strong></td>
+<td>rgba</td>
+<td>MOV</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<p>Above is the information I got on the Internet, not sure if there are more available containers, but the MOV is tested and is sure to work. (find more info <a href="https://superuser.com/questions/1505679/lossless-video-codec-supporting-alpha-channels?newreg=368280d984fb4b76889136daf35a942c">here</a>)</p>
+<p>To see what pixel formats a codec supports with ffmpeg, run this command: (for the qtrle case)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ffmpeg</span> <span class="at">-h</span> encoder=qtrle</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>I’m using PowerDirector as the editing software, and it doesn’t support the ffv1 and qtrle transparent videos. After my test, it seems like PowerDirector only supports the PNG codec.</p>
+</section>
+<section id="png" class="level2">
+<h2 class="anchored" data-anchor-id="png">PNG?</h2>
+<p>Yes, PNG could be a video codec. Unlike others, PNG codec simply stores every single frame’s data without compression, which makes the file size huge compared to common codecs like h.265.</p>
+</section>
+<section id="implementation" class="level2">
+<h2 class="anchored" data-anchor-id="implementation">Implementation</h2>
+<p>Let’s output a video with a PNG codec and MOV format using the <code>FFmpegFrameRecorder</code> in JavaCV, and I’ll show you how to do it with Java <code>BufferedImage</code>.</p>
+<p>Other codecs can be applied easily, just be careful to use the corresponding pixel formats. (Only the essential part of the code displayed here.)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Setup a converter for coverting a buffered image to the accepted Frame format.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Java2DFrameConverter java2DFrameConverter <span class="op">=</span> <span class="kw">new</span> <span class="fu">Java2DFrameConverter</span><span class="op">();</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Setup the buffered image you want to record.</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">BufferedImage</span> bufferedImage <span class="op">=</span> <span class="kw">new</span> <span class="bu">BufferedImage</span><span class="op">(</span>w<span class="op">,</span> h<span class="op">,</span> <span class="bu">BufferedImage</span><span class="op">.</span><span class="fu">TYPE_INT_ARGB</span><span class="op">);</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">// Draw something on the buffered image.</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="bu">Graphics2D</span> imgG2d <span class="op">=</span> <span class="op">(</span><span class="bu">Graphics2D</span><span class="op">)</span> bufferedImage<span class="op">.</span><span class="fu">getGraphics</span><span class="op">();</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>imgG2d<span class="op">.</span><span class="fu">fillRect</span><span class="op">(</span><span class="kw">...</span><span class="op">);</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">// Setup the frame recorder.</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>FFmpegFrameRecorder frameRecorder <span class="op">=</span> <span class="kw">new</span> <span class="fu">FFmpegFrameRecorder</span><span class="op">(</span><span class="kw">...</span><span class="op">);</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>frameRecorder<span class="op">.</span><span class="fu">setFrameRate</span><span class="op">(</span><span class="kw">...</span><span class="op">);</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>frameRecorder<span class="op">.</span><span class="fu">setVideoBitrate</span><span class="op">(</span><span class="kw">...</span><span class="op">);</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>frameRecorder<span class="op">.</span><span class="fu">setVideoCodec</span><span class="op">(</span>avcodec<span class="op">.</span><span class="fu">AV_CODEC_ID_PNG</span><span class="op">);</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>frameRecorder<span class="op">.</span><span class="fu">setPixelFormat</span><span class="op">(</span>avutil<span class="op">.</span><span class="fu">AV_PIX_FMT_RGBA</span><span class="op">);</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>frameRecorder<span class="op">.</span><span class="fu">setFormat</span><span class="op">(</span><span class="st">"mov"</span><span class="op">);</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>   frameRecorder<span class="op">.</span><span class="fu">start</span><span class="op">();</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span><span class="op">(</span><span class="kw">...</span><span class="op">){</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>      <span class="bu">Frame</span> frame <span class="op">=</span> java2DFrameConverter<span class="op">.</span><span class="fu">getFrame</span><span class="op">(</span>bufferedImage<span class="op">);</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>      frameRecorder<span class="op">.</span><span class="fu">record</span><span class="op">(</span>frame<span class="op">,</span> AV_PIX_FMT_ARGB<span class="op">);</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>   <span class="op">}</span> </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">catch</span><span class="op">(</span><span class="kw">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">...</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>frameRecorder<span class="op">.</span><span class="fu">close</span><span class="op">();</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>It’s done. You can now output your own transparent videos!</p>
+<p>Here are screenshots of comparison of <strong>our</strong> outputted video vs.&nbsp;<strong>Sayatoo’s</strong> vs.&nbsp;<strong>H265 common</strong>. # Our Format<br>
+<img src="formatOfOurs.jpg" class="img-fluid" alt="ours"></p>
+</section>
+<section id="sayatoos-format" class="level1">
+<h1>Sayatoo’s Format</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="formatOfSayatoo.jpg" class="img-fluid figure-img"></p>
+<figcaption>sayatoo</figcaption>
+</figure>
+</div>
+</section>
+<section id="h265-common-format" class="level1">
+<h1>H265 Common Format</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="commonFormatH265.jpg" class="img-fluid figure-img"></p>
+<figcaption>h265</figcaption>
+</figure>
+</div>
+</section>
+<section id="why-i-wrote-this-post" class="level1">
+<h1>Why I wrote this post?</h1>
+<p>I am working on <a href="https://github.com/Bowen951209/open-karaoke-toolkit">a karaoke software project</a>, being confused about exporting a transparent video. In the end, I referenced the Sayatoo, the commercial karaoke software and found that it strangely used PNG as its video input. After a lot of attempts and I finally found that you have to use PNG codec for transparent videos, so that PowerDirector can recognize it.</p>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li><a href="https://superuser.com/questions/1505679/lossless-video-codec-supporting-alpha-channels?newreg=368280d984fb4b76889136daf35a942c" class="uri">https://superuser.com/questions/1505679/lossless-video-codec-supporting-alpha-channels?newreg=368280d984fb4b76889136daf35a942c</a></li>
+<li><a href="https://en.wikipedia.org/wiki/FFV1" class="uri">https://en.wikipedia.org/wiki/FFV1</a></li>
+</ul>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
