@@ -6,4 +6,5 @@ edition = "2024"
 [dependencies]
 anyhow = "1.0.103"
 combination = "0.2.2"
+derive_builder = "0.20.2"
 macroquad = "0.4.15"
