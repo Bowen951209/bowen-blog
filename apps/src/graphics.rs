@@ -9,8 +9,8 @@ pub trait Draw {
 
 #[derive(Debug, Builder)]
 pub struct Table {
-    row_count: u8,
-    column_count: u8,
+    pub row_count: u8,
+    pub column_count: u8,
     thickness: f32,
     color: Color,
     cards: Vec<Card>,

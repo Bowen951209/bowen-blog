@@ -19,14 +19,20 @@ async fn main() -> anyhow::Result<()> {
 
     loop {
         clear_background(BLACK);
-
-        for (i, table) in tables.iter().enumerate() {
-            let x = (i % 2 * 300) as f32;
-            let y = (i / 2 * 180) as f32;
-            table.draw(vec2(x, y), vec2(20.0 * 13.0, 40.0 * 4.0));
-        }
+        draw_dock(&tables);
 
         next_frame().await;
+    }
+}
+
+fn draw_dock(tables: &[Table]) {
+    for (i, table) in tables.iter().enumerate() {
+        let x = (i % tables.len()) as f32 * screen_width() / 8.0;
+        let y = screen_height() * 0.02;
+
+        let width = screen_width() / 8.0 * 0.8;
+        let height = 2.0 * width * (table.row_count as f32 / table.column_count as f32);
+        table.draw(vec2(x, y), vec2(width, height));
     }
 }
 
