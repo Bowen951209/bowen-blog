@@ -12,6 +12,10 @@ impl Card {
 
         (col, row)
     }
+
+    pub fn all() -> impl Iterator<Item = Card> {
+        (0..52).map(Card)
+    }
 }
 
 pub fn setup_papers() -> [Paper; 8] {
@@ -19,8 +23,7 @@ pub fn setup_papers() -> [Paper; 8] {
     let paper_indices: [usize; 8] = std::array::from_fn(|i| i);
     let included_paper_indices = paper_indices.try_select(&Combine::new(8, 5)).unwrap();
 
-    let cards = (0..52).map(Card);
-    for (card, included_paper_indices) in cards.zip(included_paper_indices) {
+    for (card, included_paper_indices) in Card::all().zip(included_paper_indices) {
         for included_paper_index in included_paper_indices {
             papers[*included_paper_index].push(card);
         }
@@ -52,15 +55,15 @@ mod test {
         assert_eq!(contained_papers.len(), 5);
         assert_eq!(not_contained_papers.len(), 3);
 
-        for i in 0..52 {
-            if i == my_card.0 {
+        for card in Card::all() {
+            if card == my_card {
                 continue;
             }
 
             assert!(
                 not_contained_papers
                     .iter()
-                    .any(|paper| paper.contains(&Card(i)))
+                    .any(|paper| paper.contains(&card))
             );
         }
     }
