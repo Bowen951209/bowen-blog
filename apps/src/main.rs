@@ -20,7 +20,11 @@ async fn main() -> anyhow::Result<()> {
     loop {
         clear_background(BLACK);
 
-        tables.iter().for_each(Table::draw);
+        for (i, table) in tables.iter().enumerate() {
+            let x = (i % 2 * 300) as f32;
+            let y = (i / 2 * 180) as f32;
+            table.draw(vec2(x, y), vec2(20.0 * 13.0, 40.0 * 4.0));
+        }
 
         next_frame().await;
     }
@@ -30,12 +34,7 @@ fn tables_from_papers<const N: usize>(papers: [Paper; N]) -> [Table; N] {
     let mut temp_array = papers.map(Some);
 
     std::array::from_fn(|i| {
-        let x = (i % 2 * 300) as f32;
-        let y = (i / 2 * 180) as f32;
-
         TableBuilder::default()
-            .position(vec2(x, y))
-            .cell_size(vec2(20.0, 40.0))
             .column_count(13)
             .row_count(4)
             .thickness(2.0)
