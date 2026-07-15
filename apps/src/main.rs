@@ -1,7 +1,7 @@
 mod graphics;
 mod paper;
 
-use macroquad::prelude::*;
+use macroquad::{prelude::*, rand::RandGenerator};
 
 use crate::{
     graphics::{Draw, Table, TableBuilder},
@@ -13,7 +13,8 @@ async fn main() -> anyhow::Result<()> {
     let font = load_ttf_font_from_bytes(include_bytes!("poker_dejavu.ttf"))?;
     set_default_font(font);
 
-    let papers = paper::setup_papers();
+    // TODO: let user set seed
+    let papers = paper::setup_papers(&RandGenerator::new());
     let tables = tables_from_papers(papers);
 
     loop {
