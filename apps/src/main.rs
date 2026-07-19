@@ -7,7 +7,7 @@ use arrayvec::ArrayVec;
 use macroquad::{prelude::*, rand::RandGenerator};
 
 use crate::{
-    graphics::{Asking, AskingLine, AutoLayoutDraw, Dock, Table, TableBuilder},
+    graphics::{AskingLine, AutoLayoutDraw, Dock, Showing, Table, TableBuilder},
     paper::{Card, Paper},
 };
 
@@ -99,7 +99,7 @@ async fn main() -> anyhow::Result<()> {
             // interactively ask the user if there card is in the shown table
 
             // show the asking table
-            Asking { table: asking }.draw();
+            Showing { table: asking }.draw();
 
             // draw the line that connects the asking table in the
             // dock, and that in the middle of the screen.

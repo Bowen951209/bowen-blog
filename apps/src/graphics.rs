@@ -139,12 +139,11 @@ impl<'a> AutoLayoutDraw for Dock<'a> {
     }
 }
 
-// TODO: rename to Showing
-pub struct Asking<'a> {
+pub struct Showing<'a> {
     pub table: &'a Table,
 }
 
-impl<'a> Asking<'a> {
+impl<'a> Showing<'a> {
     pub fn layout(&self) -> Layout {
         let height = screen_height() * 0.6;
         let width = height / 2.0 / (self.table.row_count as f32 / self.table.column_count as f32);
@@ -158,7 +157,7 @@ impl<'a> Asking<'a> {
     }
 }
 
-impl<'a> AutoLayoutDraw for Asking<'a> {
+impl<'a> AutoLayoutDraw for Showing<'a> {
     fn draw(&self) {
         let layout = self.layout();
         self.table.draw(layout);
@@ -185,7 +184,7 @@ impl<'a, 'b> AutoLayoutDraw for AskingLine<'a, 'b> {
         let layout1 = self.dock.layout(index_in_dock);
         let pos1 = layout1.position + vec2(0.5 * layout1.size.x, layout1.size.y);
 
-        let layout2 = Asking { table: self.asking }.layout();
+        let layout2 = Showing { table: self.asking }.layout();
         let pos2 = layout2.position + vec2(0.5 * layout2.size.x, 0.0);
 
         draw_line(pos1.x, pos1.y, pos2.x, pos2.y, 2.0, WHITE);
