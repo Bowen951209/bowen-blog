@@ -120,10 +120,14 @@ impl Draw for Table {
 
 #[derive(Debug, Clone, Copy)]
 pub struct Dock<'a> {
-    pub tables: &'a [Table],
+    tables: &'a [Table],
 }
 
 impl<'a> Dock<'a> {
+    pub fn new(tables: &'a [Table]) -> Self {
+        Self { tables }
+    }
+
     pub fn layout_from_index(&self, i: usize) -> Layout {
         let x = (i % self.tables.len()) as f32 * screen_width() / 8.0;
         let y = screen_height() * 0.02;
@@ -204,15 +208,15 @@ impl<'a, 'b> AutoLayoutDraw for Dock2ShowLine<'a, 'b> {
     }
 }
 
-pub struct Animator<'a, 'b> {
+pub struct Animator<'a> {
     total_frame: u32,
     frame: u32,
     tables: [&'a Table; 3],
-    dock: Dock<'b>,
+    dock: Dock<'a>,
 }
 
-impl<'a, 'b> Animator<'a, 'b> {
-    pub fn new(total_frame: u32, tables: [&'a Table; 3], dock: Dock<'b>) -> Self {
+impl<'a> Animator<'a> {
+    pub fn new(total_frame: u32, tables: [&'a Table; 3], dock: Dock<'a>) -> Self {
         Self {
             total_frame,
             frame: 0,

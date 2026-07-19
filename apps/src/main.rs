@@ -11,6 +11,90 @@ use crate::{
     paper::{Card, Paper},
 };
 
+struct Game<'a, I: Iterator<Item = &'a Table>> {
+    tables: &'a [Table; 8],
+    state: InteractState<'a>,
+    asker: Asker<'a, I>,
+}
+
+impl<'a, I: Iterator<Item = &'a Table>> Game<'a, I> {
+    fn new(tables: &'a [Table; 8], asker: Asker<'a, I>) -> Self {
+        Self {
+            tables,
+            asker,
+            state: InteractState::Asking,
+        }
+    }
+
+    fn update(&mut self) {
+        match self.state {
+            InteractState::Asking => self.handle_ask(),
+            InteractState::PlayingAnimation(_) => self.handle_animation(),
+        }
+    }
+
+    fn handle_ask(&mut self) {
+        self.draw_dock();
+        self.draw_ask();
+        self.keyboard_answer();
+
+        // If we got the answer, switch state to `PlayingAnimation`.
+        if let Some(answer) = self.asker.answer() {
+            println!("Magic energy reached. Your card is `{answer:?}`!");
+            let animator = Animator::new(
+                180,
+                self.asker.excludeds.clone().into_inner().unwrap(),
+                Dock::new(self.tables),
+            );
+            self.state = InteractState::PlayingAnimation(animator);
+        }
+    }
+
+    fn handle_animation(&mut self) {
+        if let InteractState::PlayingAnimation(ref mut animator) = self.state {
+            animator.draw_next_frame();
+        } else {
+            panic!("It is not in PlayingAnimation state.")
+        }
+
+        self.draw_dock();
+    }
+
+    fn draw_dock(&self) {
+        Dock::new(self.tables).draw();
+    }
+
+    /// Draw `asker`'s asking table in the middle of the screen, and
+    /// draw a line connecting it and that copy in the `dock`.
+    fn draw_ask(&self) {
+        let asking = self
+            .asker
+            .maybe_asking
+            .expect("There's nothing left to ask");
+
+        // draw the asking table in the middle of the screen
+        Showing { table: asking }.draw();
+
+        // draw the line that connects the asking table in the
+        // dock, and that in the middle of the screen.
+        Dock2ShowLine {
+            dock: Dock::new(self.tables),
+            table: asking,
+        }
+        .draw();
+    }
+
+    /// Handle keyboard input. User press `Y` if his card is contained
+    /// in `asker`'s asking table. Otherwise, he press `N`.
+    fn keyboard_answer(&mut self) {
+        if is_key_pressed(KeyCode::Y) {
+            self.asker.is_included_in_asking(true);
+        } else if is_key_pressed(KeyCode::N) {
+            self.asker.is_included_in_asking(false);
+        }
+    }
+}
+
 #[derive(Debug)]
 struct Asker<'a, I: Iterator<Item = &'a Table>> {
     maybe_asking: Option<&'a Table>,
@@ -77,78 +161,37 @@ impl<'a, I: Iterator<Item = &'a Table>> Asker<'a, I> {
     }
 }
 
-enum InteractState<'a, 'b> {
+enum InteractState<'a> {
     Asking,
-    PlayingAnimation(Animator<'a, 'b>),
+    PlayingAnimation(Animator<'a>),
 }
 
 #[macroquad::main("MyGame")]
 async fn main() -> anyhow::Result<()> {
-    let font = load_ttf_font_from_bytes(include_bytes!("poker_dejavu.ttf"))?;
-    set_default_font(font);
+    setup_font()?;
 
-    // TODO: let user set seed
-    let papers = paper::setup_papers(&RandGenerator::new());
-    let tables = tables_from_papers(papers);
-
-    let dock = Dock { tables: &tables };
-
-    let mut asker = Some(Asker::new(tables.iter().peekable()));
-
-    let mut state = InteractState::Asking;
+    let tables = setup_tables();
+    let asker = Asker::new(tables.iter().peekable());
+    let mut game = Game::new(&tables, asker);
 
     loop {
         clear_background(BLACK);
-
-        dock.draw();
-
-        match state {
-            InteractState::Asking => {
-                // interactively ask the user if there card is in the shown table
-                let asker_ref = asker.as_mut().unwrap();
-                let asking = asker_ref.maybe_asking.expect("There's nothing left to ask");
-
-                // show the asking table
-                Showing { table: asking }.draw();
-
-                // draw the line that connects the asking table in the
-                // dock, and that in the middle of the screen.
-                Dock2ShowLine {
-                    dock,
-                    table: asking,
-                }
-                .draw();
-
-                // user answer
-                if is_key_pressed(KeyCode::Y) {
-                    asker_ref.is_included_in_asking(true);
-                } else if is_key_pressed(KeyCode::N) {
-                    asker_ref.is_included_in_asking(false);
-                }
-
-                // check if we got the answer
-                if let Some(answer) = asker_ref.answer() {
-                    println!("Magic energy reached. Your card is `{answer:?}`!");
-                    let animator = Animator::new(
-                        180,
-                        asker
-                            .take()
-                            .unwrap()
-                            .excludeds
-                            .into_inner()
-                            .expect("`asker.excludeds` is not full to capacity 3."),
-                        dock,
-                    );
-                    state = InteractState::PlayingAnimation(animator);
-                }
-            }
-            InteractState::PlayingAnimation(ref mut animator) => {
-                animator.draw_next_frame();
-            }
-        }
-
+        game.update();
         next_frame().await;
     }
+}
+
+fn setup_font() -> Result<(), macroquad::Error> {
+    let font = load_ttf_font_from_bytes(include_bytes!("poker_dejavu.ttf"))?;
+    set_default_font(font);
+
+    Ok(())
+}
+
+fn setup_tables() -> [Table; 8] {
+    // TODO: let user set seed
+    let papers = paper::setup_papers(&RandGenerator::new());
+    tables_from_papers(papers)
 }
 
 fn tables_from_papers<const N: usize>(papers: [Paper; N]) -> [Table; N] {
