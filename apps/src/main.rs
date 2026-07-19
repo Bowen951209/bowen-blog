@@ -7,7 +7,7 @@ use arrayvec::ArrayVec;
 use macroquad::{prelude::*, rand::RandGenerator};
 
 use crate::{
-    graphics::{Asking, AutoLayoutDraw, Dock, Table, TableBuilder},
+    graphics::{Asking, AskingLine, AutoLayoutDraw, Dock, Table, TableBuilder},
     paper::{Card, Paper},
 };
 
@@ -98,8 +98,16 @@ async fn main() -> anyhow::Result<()> {
         if let Some(asking) = asker.maybe_asking {
             // interactively ask the user if there card is in the shown table
 
-            // show the asking card
+            // show the asking table
             Asking { table: asking }.draw();
+
+            // draw the line that connects the asking table in the
+            // dock, and that in the middle of the screen.
+            AskingLine {
+                dock: &dock,
+                asking,
+            }
+            .draw();
 
             // user answer
             if is_key_pressed(KeyCode::Y) {

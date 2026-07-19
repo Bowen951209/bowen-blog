@@ -139,6 +139,7 @@ impl<'a> AutoLayoutDraw for Dock<'a> {
     }
 }
 
+// TODO: rename to Showing
 pub struct Asking<'a> {
     pub table: &'a Table,
 }
@@ -161,5 +162,32 @@ impl<'a> AutoLayoutDraw for Asking<'a> {
     fn draw(&self) {
         let layout = self.layout();
         self.table.draw(layout);
+    }
+}
+
+/// A line that connects the asking table in the dock, and that
+/// showing in the middle of the screen.
+pub struct AskingLine<'a, 'b> {
+    pub dock: &'a Dock<'a>,
+    pub asking: &'b Table,
+}
+
+impl<'a, 'b> AutoLayoutDraw for AskingLine<'a, 'b> {
+    fn draw(&self) {
+        let index_in_dock = self
+            .dock
+            .tables
+            .iter()
+            .enumerate()
+            .find_map(|(i, t)| std::ptr::eq(t, self.asking).then_some(i))
+            .expect("Cannot find `asking` in `dock`.");
+
+        let layout1 = self.dock.layout(index_in_dock);
+        let pos1 = layout1.position + vec2(0.5 * layout1.size.x, layout1.size.y);
+
+        let layout2 = Asking { table: self.asking }.layout();
+        let pos2 = layout2.position + vec2(0.5 * layout2.size.x, 0.0);
+
+        draw_line(pos1.x, pos1.y, pos2.x, pos2.y, 2.0, WHITE);
     }
 }
