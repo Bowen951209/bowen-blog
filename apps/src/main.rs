@@ -7,7 +7,7 @@ use arrayvec::ArrayVec;
 use macroquad::{prelude::*, rand::RandGenerator};
 
 use crate::{
-    graphics::{Draw, Table, TableBuilder},
+    graphics::{Asking, AutoLayoutDraw, Dock, Table, TableBuilder},
     paper::{Card, Paper},
 };
 
@@ -86,17 +86,20 @@ async fn main() -> anyhow::Result<()> {
     let papers = paper::setup_papers(&RandGenerator::new());
     let tables = tables_from_papers(papers);
 
+    let dock = Dock { tables: &tables };
+
     let mut asker = Asker::new(tables.iter().peekable());
 
     loop {
         clear_background(BLACK);
-        draw_dock(&tables);
+
+        dock.draw();
 
         if let Some(asking) = asker.maybe_asking {
             // interactively ask the user if there card is in the shown table
 
             // show the asking card
-            draw_asking(asking);
+            Asking { table: asking }.draw();
 
             // user answer
             if is_key_pressed(KeyCode::Y) {
@@ -113,27 +116,6 @@ async fn main() -> anyhow::Result<()> {
 
         next_frame().await;
     }
-}
-
-fn draw_dock(tables: &[Table]) {
-    for (i, table) in tables.iter().enumerate() {
-        let x = (i % tables.len()) as f32 * screen_width() / 8.0;
-        let y = screen_height() * 0.02;
-
-        let width = screen_width() / 8.0 * 0.8;
-        let height = 2.0 * width * (table.row_count as f32 / table.column_count as f32);
-        table.draw(vec2(x, y), vec2(width, height));
-    }
-}
-
-fn draw_asking(table: &Table) {
-    let height = screen_height() * 0.6;
-    let width = height / 2.0 / (table.row_count as f32 / table.column_count as f32);
-
-    let x = (screen_width() - width) / 2.0;
-    let y = screen_height() - height;
-
-    table.draw(vec2(x, y), vec2(width, height));
 }
 
 fn tables_from_papers<const N: usize>(papers: [Paper; N]) -> [Table; N] {

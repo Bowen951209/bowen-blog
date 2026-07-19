@@ -4,7 +4,17 @@ use derive_builder::Builder;
 use macroquad::prelude::*;
 
 pub trait Draw {
-    fn draw(&self, position: Vec2, size: Vec2);
+    fn draw(&self, layout: Layout);
+}
+
+pub trait AutoLayoutDraw {
+    fn draw(&self);
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct Layout {
+    position: Vec2,
+    size: Vec2,
 }
 
 #[derive(Debug, Builder)]
@@ -91,10 +101,65 @@ impl Table {
 }
 
 impl Draw for Table {
-    fn draw(&self, position: Vec2, bound_size: Vec2) {
-        let cell_size = bound_size / vec2(self.column_count as f32, self.row_count as f32);
+    fn draw(&self, bound_layout: Layout) {
+        let cell_size = bound_layout.size / vec2(self.column_count as f32, self.row_count as f32);
 
-        self.draw_borders(position, bound_size, cell_size);
-        self.draw_cards(position, cell_size);
+        self.draw_borders(bound_layout.position, bound_layout.size, cell_size);
+        self.draw_cards(bound_layout.position, cell_size);
+    }
+}
+
+pub struct Dock<'a> {
+    pub tables: &'a [Table],
+}
+
+impl<'a> Dock<'a> {
+    pub fn layout(&self, i: usize) -> Layout {
+        let x = (i % self.tables.len()) as f32 * screen_width() / 8.0;
+        let y = screen_height() * 0.02;
+
+        let table = &self.tables[i];
+
+        let width = screen_width() / self.tables.len() as f32 * 0.8;
+        let height = 2.0 * width * (table.row_count as f32 / table.column_count as f32);
+
+        Layout {
+            position: vec2(x, y),
+            size: vec2(width, height),
+        }
+    }
+}
+
+impl<'a> AutoLayoutDraw for Dock<'a> {
+    fn draw(&self) {
+        for (i, table) in self.tables.iter().enumerate() {
+            let layout = self.layout(i);
+            table.draw(layout);
+        }
+    }
+}
+
+pub struct Asking<'a> {
+    pub table: &'a Table,
+}
+
+impl<'a> Asking<'a> {
+    pub fn layout(&self) -> Layout {
+        let height = screen_height() * 0.6;
+        let width = height / 2.0 / (self.table.row_count as f32 / self.table.column_count as f32);
+        let x = (screen_width() - width) / 2.0;
+        let y = screen_height() - height;
+
+        Layout {
+            position: vec2(x, y),
+            size: vec2(width, height),
+        }
+    }
+}
+
+impl<'a> AutoLayoutDraw for Asking<'a> {
+    fn draw(&self) {
+        let layout = self.layout();
+        self.table.draw(layout);
     }
 }
