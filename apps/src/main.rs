@@ -7,7 +7,7 @@ use arrayvec::ArrayVec;
 use macroquad::{prelude::*, rand::RandGenerator};
 
 use crate::{
-    graphics::{AskingLine, AutoLayoutDraw, Dock, Showing, Table, TableBuilder},
+    graphics::{Animator, AutoLayoutDraw, Dock, Dock2ShowLine, Showing, Table, TableBuilder},
     paper::{Card, Paper},
 };
 
@@ -77,6 +77,11 @@ impl<'a, I: Iterator<Item = &'a Table>> Asker<'a, I> {
     }
 }
 
+enum InteractState<'a, 'b> {
+    Asking,
+    PlayingAnimation(Animator<'a, 'b>),
+}
+
 #[macroquad::main("MyGame")]
 async fn main() -> anyhow::Result<()> {
     let font = load_ttf_font_from_bytes(include_bytes!("poker_dejavu.ttf"))?;
@@ -88,37 +93,57 @@ async fn main() -> anyhow::Result<()> {
 
     let dock = Dock { tables: &tables };
 
-    let mut asker = Asker::new(tables.iter().peekable());
+    let mut asker = Some(Asker::new(tables.iter().peekable()));
+
+    let mut state = InteractState::Asking;
 
     loop {
         clear_background(BLACK);
 
         dock.draw();
 
-        if let Some(asking) = asker.maybe_asking {
-            // interactively ask the user if there card is in the shown table
+        match state {
+            InteractState::Asking => {
+                // interactively ask the user if there card is in the shown table
+                let asker_ref = asker.as_mut().unwrap();
+                let asking = asker_ref.maybe_asking.expect("There's nothing left to ask");
 
-            // show the asking table
-            Showing { table: asking }.draw();
+                // show the asking table
+                Showing { table: asking }.draw();
 
-            // draw the line that connects the asking table in the
-            // dock, and that in the middle of the screen.
-            AskingLine {
-                dock: &dock,
-                asking,
+                // draw the line that connects the asking table in the
+                // dock, and that in the middle of the screen.
+                Dock2ShowLine {
+                    dock,
+                    table: asking,
+                }
+                .draw();
+
+                // user answer
+                if is_key_pressed(KeyCode::Y) {
+                    asker_ref.is_included_in_asking(true);
+                } else if is_key_pressed(KeyCode::N) {
+                    asker_ref.is_included_in_asking(false);
+                }
+
+                // check if we got the answer
+                if let Some(answer) = asker_ref.answer() {
+                    println!("Magic energy reached. Your card is `{answer:?}`!");
+                    let animator = Animator::new(
+                        180,
+                        asker
+                            .take()
+                            .unwrap()
+                            .excludeds
+                            .into_inner()
+                            .expect("`asker.excludeds` is not full to capacity 3."),
+                        dock,
+                    );
+                    state = InteractState::PlayingAnimation(animator);
+                }
             }
-            .draw();
-
-            // user answer
-            if is_key_pressed(KeyCode::Y) {
-                asker.is_included_in_asking(true);
-            } else if is_key_pressed(KeyCode::N) {
-                asker.is_included_in_asking(false);
-            }
-
-            // check if we got the answer
-            if let Some(answer) = asker.answer() {
-                println!("Magic energy reached. Your card is `{answer:?}`!");
+            InteractState::PlayingAnimation(ref mut animator) => {
+                animator.draw_next_frame();
             }
         }
 

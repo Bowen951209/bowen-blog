@@ -17,6 +17,15 @@ pub struct Layout {
     size: Vec2,
 }
 
+impl Layout {
+    pub fn lerp(self, rhs: Self, t: f32) -> Self {
+        Self {
+            position: self.position.lerp(rhs.position, t),
+            size: self.size.lerp(rhs.size, t),
+        }
+    }
+}
+
 #[derive(Debug, Builder)]
 pub struct Table {
     pub cards: Vec<Card>,
@@ -109,12 +118,13 @@ impl Draw for Table {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct Dock<'a> {
     pub tables: &'a [Table],
 }
 
 impl<'a> Dock<'a> {
-    pub fn layout(&self, i: usize) -> Layout {
+    pub fn layout_from_index(&self, i: usize) -> Layout {
         let x = (i % self.tables.len()) as f32 * screen_width() / 8.0;
         let y = screen_height() * 0.02;
 
@@ -128,12 +138,23 @@ impl<'a> Dock<'a> {
             size: vec2(width, height),
         }
     }
+
+    pub fn layout_from_ptr(&self, ptr: &Table) -> Layout {
+        let index = self
+            .tables
+            .iter()
+            .enumerate()
+            .find_map(|(i, t)| std::ptr::eq(t, ptr).then_some(i))
+            .expect("Cannot find the table.");
+
+        self.layout_from_index(index)
+    }
 }
 
 impl<'a> AutoLayoutDraw for Dock<'a> {
     fn draw(&self) {
         for (i, table) in self.tables.iter().enumerate() {
-            let layout = self.layout(i);
+            let layout = self.layout_from_index(i);
             table.draw(layout);
         }
     }
@@ -164,29 +185,72 @@ impl<'a> AutoLayoutDraw for Showing<'a> {
     }
 }
 
-/// A line that connects the asking table in the dock, and that
+/// A line that connects `table` in the dock, and that
 /// showing in the middle of the screen.
-pub struct AskingLine<'a, 'b> {
-    pub dock: &'a Dock<'a>,
-    pub asking: &'b Table,
+pub struct Dock2ShowLine<'a, 'b> {
+    pub dock: Dock<'a>,
+    pub table: &'b Table,
 }
 
-impl<'a, 'b> AutoLayoutDraw for AskingLine<'a, 'b> {
+impl<'a, 'b> AutoLayoutDraw for Dock2ShowLine<'a, 'b> {
     fn draw(&self) {
-        let index_in_dock = self
-            .dock
-            .tables
-            .iter()
-            .enumerate()
-            .find_map(|(i, t)| std::ptr::eq(t, self.asking).then_some(i))
-            .expect("Cannot find `asking` in `dock`.");
-
-        let layout1 = self.dock.layout(index_in_dock);
+        let layout1 = self.dock.layout_from_ptr(self.table);
         let pos1 = layout1.position + vec2(0.5 * layout1.size.x, layout1.size.y);
 
-        let layout2 = Showing { table: self.asking }.layout();
+        let layout2 = Showing { table: self.table }.layout();
         let pos2 = layout2.position + vec2(0.5 * layout2.size.x, 0.0);
 
         draw_line(pos1.x, pos1.y, pos2.x, pos2.y, 2.0, WHITE);
+    }
+}
+
+pub struct Animator<'a, 'b> {
+    total_frame: u32,
+    frame: u32,
+    tables: [&'a Table; 3],
+    dock: Dock<'b>,
+}
+
+impl<'a, 'b> Animator<'a, 'b> {
+    pub fn new(total_frame: u32, tables: [&'a Table; 3], dock: Dock<'b>) -> Self {
+        Self {
+            total_frame,
+            frame: 0,
+            tables,
+            dock,
+        }
+    }
+    pub fn draw_next_frame(&mut self) {
+        self.frame += 1;
+
+        let t = self.frame as f32 / self.total_frame as f32;
+        // The index of the table we are playing
+        let index = (t * 3.0).floor();
+
+        if index < 3.0 {
+            // The percentage of THIS table animation.
+            let this_percentage = t * 3.0 - index;
+
+            let table = self.tables[index as usize];
+
+            let start = self.dock.layout_from_ptr(table);
+            let end = Showing { table }.layout();
+
+            let layout = start.lerp(end, this_percentage);
+            table.draw(layout);
+
+            // draw the showing line
+            Dock2ShowLine {
+                dock: self.dock,
+                table,
+            }
+            .draw();
+        }
+
+        // remember to draw the in-position tables
+        for table in self.tables.iter().take(index as usize) {
+            let layout = Showing { table }.layout();
+            table.draw(layout);
+        }
     }
 }
