@@ -1,4 +1,4 @@
-use crate::paper::Card;
+use crate::paper::{Card, Suit};
 
 use derive_builder::Builder;
 use macroquad::prelude::*;
@@ -18,6 +18,10 @@ pub struct Layout {
 }
 
 impl Layout {
+    pub fn new(position: Vec2, size: Vec2) -> Self {
+        Self { position, size }
+    }
+
     pub fn lerp(self, rhs: Self, t: f32) -> Self {
         Self {
             position: self.position.lerp(rhs.position, t),
@@ -53,58 +57,12 @@ impl Table {
     }
 
     fn draw_cards(&self, position: Vec2, cell_size: Vec2) {
-        let number_font_size = (cell_size.x * 0.5).round() as u16;
-        let suit_font_size = (cell_size.x * 0.8).round() as u16;
-
-        for (i, j) in self.cards.iter().map(Card::as_col_row) {
+        for card in self.cards.iter() {
+            let (i, j) = card.as_col_row();
             let x = i as f32 * cell_size.x + position.x;
             let y = j as f32 * cell_size.y + position.y;
-
-            // draw number
-            let number = (i + 1).to_string();
-            let number_text_center = get_text_center(&number, None, number_font_size, 1.0, 0.0);
-            // slightly above cell center for suits space.
-            let cell_center_up = 0.5 * cell_size - vec2(0.0, cell_size.y * 0.3);
-            let offset = cell_center_up - number_text_center;
-
-            draw_text(
-                &number,
-                x + offset.x,
-                y + offset.y,
-                number_font_size as f32,
-                self.color,
-            );
-
-            // draw suit
-            let suit = Self::suit_from_row(j);
-            let suit_text_center = get_text_center(suit, None, suit_font_size, 1.0, 0.0);
-            // slightly below cell center.
-            let cell_center_down = 0.5 * cell_size + vec2(0.0, cell_size.y * 0.3);
-            let offset = cell_center_down - suit_text_center;
-
-            Self::draw_suit(suit, x + offset.x, y + offset.y, suit_font_size as f32);
-        }
-    }
-
-    fn draw_suit(suit: &str, x: f32, y: f32, font_size: f32) {
-        let color = match suit {
-            "♣" => WHITE,
-            "♥" => RED,
-            "♠" => WHITE,
-            "♦" => RED,
-            _ => panic!(r#"Can only handle "♣", "♥", "♠", and "♦"."#),
-        };
-
-        draw_text(suit, x, y, font_size, color);
-    }
-
-    fn suit_from_row(i: u8) -> &'static str {
-        match i {
-            0 => "♣",
-            1 => "♥",
-            2 => "♠",
-            3 => "♦",
-            _ => panic!("Can only handle row 0, 1, 2, and 3."),
+            let layout = Layout::new(vec2(x, y), cell_size);
+            card.draw(layout);
         }
     }
 }
@@ -165,10 +123,14 @@ impl<'a> AutoLayoutDraw for Dock<'a> {
 }
 
 pub struct Showing<'a> {
-    pub table: &'a Table,
+    table: &'a Table,
 }
 
 impl<'a> Showing<'a> {
+    pub fn new(table: &'a Table) -> Self {
+        Self { table }
+    }
+
     pub fn layout(&self) -> Layout {
         let height = screen_height() * 0.6;
         let width = height / 2.0 / (self.table.row_count as f32 / self.table.column_count as f32);
@@ -224,7 +186,8 @@ impl<'a> Animator<'a> {
             dock,
         }
     }
-    pub fn draw_next_frame(&mut self) {
+
+    pub fn draw_next_frame(&mut self) -> AnimateState {
         self.frame += 1;
 
         let t = self.frame as f32 / self.total_frame as f32;
@@ -256,5 +219,105 @@ impl<'a> Animator<'a> {
             let layout = Showing { table }.layout();
             table.draw(layout);
         }
+
+        if index < 3.0 {
+            AnimateState::Playing
+        } else {
+            AnimateState::Finished
+        }
     }
+}
+
+pub struct Hint<'a> {
+    text: &'a str,
+    font_size: u16,
+}
+
+impl<'a> Hint<'a> {
+    pub fn new(text: &'a str, font_size: u16) -> Self {
+        Self { text, font_size }
+    }
+}
+
+impl<'a> AutoLayoutDraw for Hint<'a> {
+    fn draw(&self) {
+        let center = get_text_center(self.text, None, self.font_size, 1.0, 0.0);
+        let x = screen_width() * 0.5 - center.x;
+        let y = screen_height() * 0.2 - center.y;
+
+        draw_text(self.text, x, y, self.font_size as f32, WHITE);
+    }
+}
+
+pub enum AnimateState {
+    Playing,
+    Finished,
+}
+
+impl Draw for Card {
+    fn draw(&self, layout: Layout) {
+        self.draw_suit_and_number(layout);
+        draw_border(layout);
+    }
+}
+
+trait CardDraw {
+    fn draw_suit_and_number(&self, layout: Layout);
+}
+
+impl CardDraw for Card {
+    fn draw_suit_and_number(&self, layout: Layout) {
+        let (suit, number) = self.as_suit_and_number();
+        draw_suit(suit, layout);
+        draw_number(number, layout);
+    }
+}
+
+fn draw_suit(suit: Suit, layout: Layout) {
+    let suit_font_size = layout.size.x.round() as u16;
+
+    let color = match suit {
+        Suit::Club => WHITE,
+        Suit::Heart => RED,
+        Suit::Spade => WHITE,
+        Suit::Diamond => RED,
+    };
+    let suit = suit.to_string();
+    let suit_text_center = get_text_center(&suit, None, suit_font_size, 1.0, 0.0);
+    // slightly below cell center.
+    let cell_center_down = 0.5 * layout.size + vec2(0.0, layout.size.y * 0.3);
+    let offset = cell_center_down - suit_text_center;
+    let position = layout.position + offset;
+
+    draw_text(&suit, position.x, position.y, suit_font_size as f32, color);
+}
+
+fn draw_number(number: u8, layout: Layout) {
+    let number_font_size = (layout.size.x * 0.7).round() as u16;
+
+    let number = number.to_string();
+    let center = get_text_center(&number, None, number_font_size, 1.0, 0.0);
+    // slightly above cell center for suits space.
+    let cell_center_up = 0.5 * layout.size - vec2(0.0, layout.size.y * 0.3);
+    let offset = cell_center_up - center;
+    let position = layout.position + offset;
+
+    draw_text(
+        &number,
+        position.x,
+        position.y,
+        number_font_size as f32,
+        WHITE,
+    );
+}
+
+fn draw_border(layout: Layout) {
+    draw_rectangle_lines(
+        layout.position.x,
+        layout.position.y,
+        layout.size.x,
+        layout.size.y,
+        2.0,
+        WHITE,
+    );
 }

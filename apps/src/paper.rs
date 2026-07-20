@@ -3,10 +3,46 @@ use macroquad::rand::{ChooseRandom, RandGenerator};
 
 pub type Paper = Vec<Card>;
 
+pub enum Suit {
+    Club,
+    Heart,
+    Spade,
+    Diamond,
+}
+
+impl std::fmt::Display for Suit {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            Suit::Club => "♣",
+            Suit::Heart => "♥",
+            Suit::Spade => "♠",
+            Suit::Diamond => "♦",
+        };
+
+        write!(f, "{s}")
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Card(u8);
 
 impl Card {
+    pub fn as_suit_and_number(&self) -> (Suit, u8) {
+        let (col, row) = self.as_col_row();
+
+        let suit = match row {
+            0 => Suit::Club,
+            1 => Suit::Heart,
+            2 => Suit::Spade,
+            3 => Suit::Diamond,
+            _ => panic!("Can only handle row 0, 1, 2, and 3."),
+        };
+
+        let number = col + 1;
+
+        (suit, number)
+    }
+
     pub fn as_col_row(&self) -> (u8, u8) {
         let row = self.0 / 13;
         let col = self.0 % 13;

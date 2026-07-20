@@ -7,7 +7,10 @@ use arrayvec::ArrayVec;
 use macroquad::{prelude::*, rand::RandGenerator};
 
 use crate::{
-    graphics::{Animator, AutoLayoutDraw, Dock, Dock2ShowLine, Showing, Table, TableBuilder},
+    graphics::{
+        AnimateState, Animator, AutoLayoutDraw, Dock, Dock2ShowLine, Draw, Hint, Layout, Showing,
+        Table, TableBuilder,
+    },
     paper::{Card, Paper},
 };
 
@@ -30,10 +33,12 @@ impl<'a, I: Iterator<Item = &'a Table>> Game<'a, I> {
         match self.state {
             InteractState::Asking => self.handle_ask(),
             InteractState::PlayingAnimation(_) => self.handle_animation(),
+            InteractState::ShowAnswer => self.handle_show_answer(),
         }
     }
 
     fn handle_ask(&mut self) {
+        Self::draw_hint();
         self.draw_dock();
         self.draw_ask();
         self.keyboard_answer();
@@ -52,12 +57,36 @@ impl<'a, I: Iterator<Item = &'a Table>> Game<'a, I> {
 
     fn handle_animation(&mut self) {
         if let InteractState::PlayingAnimation(ref mut animator) = self.state {
-            animator.draw_next_frame();
+            if matches!(animator.draw_next_frame(), AnimateState::Finished) {
+                self.state = InteractState::ShowAnswer;
+            }
         } else {
             panic!("It is not in PlayingAnimation state.")
         }
 
         self.draw_dock();
+    }
+
+    fn handle_show_answer(&self) {
+        // draw the asnwer text
+        const TEXT: &str = "Magic! Your card is:";
+        const FONT_SIZE: u16 = 20;
+        const CARD_WIDTH: f32 = 30.0;
+        const CARD_HEIGHT: f32 = 50.0;
+        let answer = self.asker.answer().expect("Answer is not found.");
+
+        Hint::new(TEXT, FONT_SIZE).draw();
+
+        let dim = measure_text(TEXT, None, FONT_SIZE, 1.0);
+        let x = (dim.width + screen_width()) * 0.5;
+        let y = screen_height() * 0.2 - CARD_HEIGHT * 0.5;
+
+        answer.draw(Layout::new(vec2(x, y), vec2(CARD_WIDTH, CARD_HEIGHT)));
+
+        // remeber to draw the tables
+        for table in self.asker.excludeds.iter() {
+            Showing::new(table).draw();
+        }
     }
 
     fn draw_dock(&self) {
@@ -73,7 +102,7 @@ impl<'a, I: Iterator<Item = &'a Table>> Game<'a, I> {
             .expect("There's nothing left to ask");
 
         // draw the asking table in the middle of the screen
-        Showing { table: asking }.draw();
+        Showing::new(asking).draw();
 
         // draw the line that connects the asking table in the
         // dock, and that in the middle of the screen.
@@ -92,6 +121,10 @@ impl<'a, I: Iterator<Item = &'a Table>> Game<'a, I> {
         } else if is_key_pressed(KeyCode::N) {
             self.asker.is_included_in_asking(false);
         }
+    }
+
+    fn draw_hint() {
+        Hint::new("Is your card in the table? (y/n)", 20).draw();
     }
 }
 
@@ -164,6 +197,7 @@ impl<'a, I: Iterator<Item = &'a Table>> Asker<'a, I> {
 enum InteractState<'a> {
     Asking,
     PlayingAnimation(Animator<'a>),
+    ShowAnswer,
 }
 
 #[macroquad::main("MyGame")]
@@ -182,7 +216,8 @@ async fn main() -> anyhow::Result<()> {
 }
 
 fn setup_font() -> Result<(), macroquad::Error> {
-    let font = load_ttf_font_from_bytes(include_bytes!("poker_dejavu.ttf"))?;
+    let font = load_ttf_font_from_bytes(include_bytes!("/usr/share/fonts/TTF/DejaVuSerif.ttf"))?;
+    // let font = load_ttf_font_from_bytes(include_bytes!("poker_dejavu.ttf"))?;
     set_default_font(font);
 
     Ok(())
