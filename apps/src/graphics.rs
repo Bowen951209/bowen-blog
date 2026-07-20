@@ -78,22 +78,23 @@ impl Draw for Table {
 
 #[derive(Debug, Clone, Copy)]
 pub struct Dock<'a> {
-    tables: &'a [Table],
+    table_textures: &'a [Texture2D],
 }
 
 impl<'a> Dock<'a> {
-    pub fn new(tables: &'a [Table]) -> Self {
-        Self { tables }
+    pub fn new(table_textures: &'a [Texture2D]) -> Self {
+        Self { table_textures }
     }
 
     pub fn layout_from_index(&self, i: usize) -> Layout {
-        let x = (i % self.tables.len()) as f32 * screen_width() / 8.0;
+        let len = self.table_textures.len();
+        let x = (i % len) as f32 * screen_width() / len as f32;
         let y = screen_height() * 0.02;
 
-        let table = &self.tables[i];
+        let texture = &self.table_textures[i];
 
-        let width = screen_width() / self.tables.len() as f32 * 0.8;
-        let height = 2.0 * width * (table.row_count as f32 / table.column_count as f32);
+        let width = screen_width() / self.table_textures.len() as f32 * 0.8;
+        let height = width * (texture.height() / texture.width());
 
         Layout {
             position: vec2(x, y),
@@ -101,9 +102,9 @@ impl<'a> Dock<'a> {
         }
     }
 
-    pub fn layout_from_ptr(&self, ptr: &Table) -> Layout {
+    pub fn layout_from_ptr(&self, ptr: &Texture2D) -> Layout {
         let index = self
-            .tables
+            .table_textures
             .iter()
             .enumerate()
             .find_map(|(i, t)| std::ptr::eq(t, ptr).then_some(i))
@@ -115,7 +116,7 @@ impl<'a> Dock<'a> {
 
 impl<'a> AutoLayoutDraw for Dock<'a> {
     fn draw(&self) {
-        for (i, table) in self.tables.iter().enumerate() {
+        for (i, table) in self.table_textures.iter().enumerate() {
             let layout = self.layout_from_index(i);
             table.draw(layout);
         }
@@ -123,17 +124,17 @@ impl<'a> AutoLayoutDraw for Dock<'a> {
 }
 
 pub struct Showing<'a> {
-    table: &'a Table,
+    texture: &'a Texture2D,
 }
 
 impl<'a> Showing<'a> {
-    pub fn new(table: &'a Table) -> Self {
-        Self { table }
+    pub fn new(texture: &'a Texture2D) -> Self {
+        Self { texture }
     }
 
     pub fn layout(&self) -> Layout {
         let height = screen_height() * 0.6;
-        let width = height / 2.0 / (self.table.row_count as f32 / self.table.column_count as f32);
+        let width = height * (self.texture.width() / self.texture.height());
         let x = (screen_width() - width) / 2.0;
         let y = screen_height() - height;
 
@@ -147,23 +148,32 @@ impl<'a> Showing<'a> {
 impl<'a> AutoLayoutDraw for Showing<'a> {
     fn draw(&self) {
         let layout = self.layout();
-        self.table.draw(layout);
+        self.texture.draw(layout);
     }
 }
 
 /// A line that connects `table` in the dock, and that
 /// showing in the middle of the screen.
-pub struct Dock2ShowLine<'a, 'b> {
-    pub dock: Dock<'a>,
-    pub table: &'b Table,
+pub struct Dock2ShowLine<'a> {
+    dock: Dock<'a>,
+    table_texture: &'a Texture2D,
 }
 
-impl<'a, 'b> AutoLayoutDraw for Dock2ShowLine<'a, 'b> {
+impl<'a> Dock2ShowLine<'a> {
+    pub fn new(dock: Dock<'a>, table_texture: &'a Texture2D) -> Self {
+        Self {
+            dock,
+            table_texture,
+        }
+    }
+}
+
+impl<'a> AutoLayoutDraw for Dock2ShowLine<'a> {
     fn draw(&self) {
-        let layout1 = self.dock.layout_from_ptr(self.table);
+        let layout1 = self.dock.layout_from_ptr(self.table_texture);
         let pos1 = layout1.position + vec2(0.5 * layout1.size.x, layout1.size.y);
 
-        let layout2 = Showing { table: self.table }.layout();
+        let layout2 = Showing::new(self.table_texture).layout();
         let pos2 = layout2.position + vec2(0.5 * layout2.size.x, 0.0);
 
         draw_line(pos1.x, pos1.y, pos2.x, pos2.y, 2.0, WHITE);
@@ -173,16 +183,16 @@ impl<'a, 'b> AutoLayoutDraw for Dock2ShowLine<'a, 'b> {
 pub struct Animator<'a> {
     total_frame: u32,
     frame: u32,
-    tables: [&'a Table; 3],
+    table_textures: [&'a Texture2D; 3],
     dock: Dock<'a>,
 }
 
 impl<'a> Animator<'a> {
-    pub fn new(total_frame: u32, tables: [&'a Table; 3], dock: Dock<'a>) -> Self {
+    pub fn new(total_frame: u32, tables: [&'a Texture2D; 3], dock: Dock<'a>) -> Self {
         Self {
             total_frame,
             frame: 0,
-            tables,
+            table_textures: tables,
             dock,
         }
     }
@@ -198,26 +208,26 @@ impl<'a> Animator<'a> {
             // The percentage of THIS table animation.
             let this_percentage = t * 3.0 - index;
 
-            let table = self.tables[index as usize];
+            let texture = &self.table_textures[index as usize];
 
-            let start = self.dock.layout_from_ptr(table);
-            let end = Showing { table }.layout();
+            let start = self.dock.layout_from_ptr(texture);
+            let end = Showing { texture }.layout();
 
             let layout = start.lerp(end, this_percentage);
-            table.draw(layout);
+            texture.draw(layout);
 
             // draw the showing line
             Dock2ShowLine {
                 dock: self.dock,
-                table,
+                table_texture: texture,
             }
             .draw();
         }
 
         // remember to draw the in-position tables
-        for table in self.tables.iter().take(index as usize) {
-            let layout = Showing { table }.layout();
-            table.draw(layout);
+        for texture in self.table_textures.iter().take(index as usize) {
+            let layout = Showing { texture }.layout();
+            texture.draw(layout);
         }
 
         if index < 3.0 {
@@ -270,6 +280,16 @@ impl CardDraw for Card {
         let (suit, number) = self.as_suit_and_number();
         draw_suit(suit, layout);
         draw_number(number, layout);
+    }
+}
+
+impl Draw for Texture2D {
+    fn draw(&self, layout: Layout) {
+        let params = DrawTextureParams {
+            dest_size: Some(layout.size),
+            ..Default::default()
+        };
+        draw_texture_ex(self, layout.position.x, layout.position.y, WHITE, params);
     }
 }
 

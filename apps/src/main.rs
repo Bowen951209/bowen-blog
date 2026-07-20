@@ -14,16 +14,23 @@ use crate::{
     paper::{Card, Paper},
 };
 
+// TODO: name 'a 'tables
 struct Game<'a, I: Iterator<Item = &'a Table>> {
     tables: &'a [Table; 8],
+    table_textures: &'a [Texture2D; 8],
     state: InteractState<'a>,
     asker: Asker<'a, I>,
 }
 
 impl<'a, I: Iterator<Item = &'a Table>> Game<'a, I> {
-    fn new(tables: &'a [Table; 8], asker: Asker<'a, I>) -> Self {
+    fn new(
+        tables: &'a [Table; 8],
+        table_textures: &'a [Texture2D; 8],
+        asker: Asker<'a, I>,
+    ) -> Self {
         Self {
             tables,
+            table_textures,
             asker,
             state: InteractState::Asking,
         }
@@ -46,11 +53,10 @@ impl<'a, I: Iterator<Item = &'a Table>> Game<'a, I> {
         // If we got the answer, switch state to `PlayingAnimation`.
         if let Some(answer) = self.asker.answer() {
             println!("Magic energy reached. Your card is `{answer:?}`!");
-            let animator = Animator::new(
-                180,
-                self.asker.excludeds.clone().into_inner().unwrap(),
-                Dock::new(self.tables),
-            );
+
+            let textures = self.excluded_table_textures();
+
+            let animator = Animator::new(180, textures, Dock::new(self.table_textures));
             self.state = InteractState::PlayingAnimation(animator);
         }
     }
@@ -84,13 +90,13 @@ impl<'a, I: Iterator<Item = &'a Table>> Game<'a, I> {
         answer.draw(Layout::new(vec2(x, y), vec2(CARD_WIDTH, CARD_HEIGHT)));
 
         // remeber to draw the tables
-        for table in self.asker.excludeds.iter() {
-            Showing::new(table).draw();
+        for texture in self.excluded_table_textures() {
+            Showing::new(texture).draw();
         }
     }
 
     fn draw_dock(&self) {
-        Dock::new(self.tables).draw();
+        Dock::new(self.table_textures).draw();
     }
 
     /// Draw `asker`'s asking table in the middle of the screen, and
@@ -100,17 +106,14 @@ impl<'a, I: Iterator<Item = &'a Table>> Game<'a, I> {
             .asker
             .maybe_asking
             .expect("There's nothing left to ask");
+        let texture = self.texture_from_table(asking);
 
         // draw the asking table in the middle of the screen
-        Showing::new(asking).draw();
+        Showing::new(texture).draw();
 
         // draw the line that connects the asking table in the
         // dock, and that in the middle of the screen.
-        Dock2ShowLine {
-            dock: Dock::new(self.tables),
-            table: asking,
-        }
-        .draw();
+        Dock2ShowLine::new(Dock::new(self.table_textures), texture).draw();
     }
 
     /// Handle keyboard input. User press `Y` if his card is contained
@@ -125,6 +128,26 @@ impl<'a, I: Iterator<Item = &'a Table>> Game<'a, I> {
 
     fn draw_hint() {
         Hint::new("Is your card in the table? (y/n)", 20).draw();
+    }
+
+    /// Return `excludeds` textures. Call this after `excludeds` has
+    /// len of 3. Otherwise it panics.
+    fn excluded_table_textures(&self) -> [&'a Texture2D; 3] {
+        self.asker
+            .excludeds
+            .clone()
+            .into_inner()
+            .expect("`excludeds` len is not 3")
+            .map(|table| self.texture_from_table(table))
+    }
+
+    fn texture_from_table(&self, table: &Table) -> &'a Texture2D {
+        let index = self
+            .tables
+            .iter()
+            .position(|t| std::ptr::eq(t, table))
+            .expect("Cannot find the excluded table in all 8 tables");
+        &self.table_textures[index]
     }
 }
 
@@ -205,11 +228,14 @@ async fn main() -> anyhow::Result<()> {
     setup_font()?;
 
     let tables = setup_tables();
+    let targets = render_tables(&tables).await;
+    let table_textures = std::array::from_fn(|i| targets[i].texture.weak_clone());
+
     let asker = Asker::new(tables.iter().peekable());
-    let mut game = Game::new(&tables, asker);
+    let mut game = Game::new(&tables, &table_textures, asker);
 
     loop {
-        clear_background(BLACK);
+        // clear_background(BLACK);
         game.update();
         next_frame().await;
     }
@@ -242,4 +268,48 @@ fn tables_from_papers<const N: usize>(papers: [Paper; N]) -> [Table; N] {
             .build()
             .unwrap()
     })
+}
+
+async fn render_tables<const N: usize>(tables: &[Table; N]) -> [RenderTarget; N] {
+    const WIDTH: u32 = 650;
+    const HEIGHT: u32 = 400;
+
+    let targets = std::array::from_fn(|_| render_target(WIDTH, HEIGHT));
+
+    for (target, table) in targets.iter().zip(tables) {
+        set_camera(&Camera2D {
+            zoom: vec2(2.0 / WIDTH as f32, 2.0 / HEIGHT as f32),
+            target: vec2(WIDTH as f32 * 0.5, HEIGHT as f32 * 0.5),
+            render_target: Some(target.clone()),
+
+            ..Default::default()
+        });
+
+        table.draw(Layout::new(Vec2::ZERO, vec2(WIDTH as f32, HEIGHT as f32)));
+        next_frame().await; // this is neccessary. make sure things are drawn
+        // on the texture before generating mipmap.
+        target.texture.generate_mipmap();
+    }
+
+    // remember to reset the default camera
+    set_default_camera();
+
+    targets
+}
+
+trait MipMap {
+    fn generate_mipmap(&self);
+}
+
+impl MipMap for Texture2D {
+    fn generate_mipmap(&self) {
+        use miniquad::MipmapFilterMode;
+
+        let texture_id = self.raw_miniquad_id();
+        let gl_ctx = unsafe { get_internal_gl().quad_context };
+
+        gl_ctx.texture_generate_mipmaps(texture_id);
+        gl_ctx.texture_set_min_filter(texture_id, FilterMode::Linear, MipmapFilterMode::Linear);
+        gl_ctx.texture_set_mag_filter(texture_id, FilterMode::Linear);
+    }
 }
