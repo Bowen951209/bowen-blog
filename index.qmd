@@ -1,5 +1,4 @@
 ---
-title: "Bowen Ho's blog"
 listing:
   contents: posts
   feed: true

@@ -9,4 +9,5 @@ Hi! My name is Bowen Ho. I am from Taiwan. Currently studying in
 [National Chung Hsing University](https://www.nchu.edu.tw/index1.php)
 as an undergraduate at the department of civil engineering.
 
-- E-mail: bowen951209@gmail.com
+- email: bowen951209@gmail.com
+- GitHub: <https://github.com/Bowen951209>

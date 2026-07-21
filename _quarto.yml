@@ -8,8 +8,6 @@ website:
   navbar:
     right:
       - about.qmd
-      - icon: github
-        href: https://github.com/Bowen951209
 format:
   html:
     theme:
