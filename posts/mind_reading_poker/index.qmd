@@ -11,12 +11,15 @@ resources:
 
 # Computer mind reading card
 
-A while ago, my sister showed me an interesting game, when she
-came back from the school's magic club.
-I don't know it's official name. I see somebody call it "computer mind
-reading card", or "perspective cards set".
+A while ago, my sister came back from her school's magic club and
+showed me an interesting game.
+I don't know its official name. I have seen people call it the
+"computer mind reading card" or a "perspective card set."
 
-![A "computer mind readong cards". From <https://dollarstoremagictricks.com/product/computer-mind-reading-cards>.](product.jpg){#fig-product}
+![A "computer mind reading cards". From <https://dollarstoremagictricks.com/product/computer-mind-reading-cards>.](product.jpg){#fig-product}
+
+To distinguish it from poker cards, I call them *tables* in the
+following.
 
 # Let's play first
 
@@ -24,7 +27,8 @@ To demonstrate how the game works, let's first play it.
 
 - Pick a card from a standard 52-card deck and keep it in mind.
 - 8 tables in series will appear on the screen. Each time, simply
-  press `y` if you see your card, or `n` if you don't.
+  click `y` in the game, or press `y` on your keyboard if you see your
+  card, or `n` if you don't.
 - Keep answering, and the game will guess your card in no time!
 - You can always refresh the page to restart the game if you pressed
   the wrong button.
@@ -43,12 +47,12 @@ If you are unable to run it in your browser, you can try to build and run locall
 <script>load("../../apps/target/wasm32-unknown-unknown/release/poker.wasm");</script>
 ```
 
-Do you have your card guessed correctly? It should, in theory.
+Did the game guess your card correctly? In theory, it always should.
 
 # Why it works?
 
-Now, I will explain how the tables are designed, i.e., how do we
-decide which card put in which table, to make the game work.
+Now, I will explain how the tables are designed, i.e., how we decide
+which card to put in which table, to make the game work.
 
 Some people may first come up with this:
 
@@ -62,8 +66,8 @@ That is indeed the key.
 
 ::: {.callout-note}
 To ensure we are on the same page, $\binom{8}{3}$ is the notation for
-*8 choose 3*. Or, the count of combinations choosing $3$ individaul
-items from $8$ individaul items.
+*8 choose 3*. Or, the count of combinations choosing $3$ individual
+items from $8$ individual items.
 :::
 
 ## Why $\binom{8}{3}$?
@@ -74,6 +78,8 @@ that
 $$
 \binom{n}{k} \geq 52.
 $$
+
+Of course we want to get the answer as quickly as possible.
 
 It is easier to see in this table:
 
@@ -91,12 +97,12 @@ It is easier to see in this table:
 
 ## What do we need?
 
-As you may have realized, the way the game find out your card is to
-overlay the three tables that does not contain your card. Then, the
-only missing card is the answer. Thus, let's say, for the table
-combination that represents card "club A", at least one of the three
-tables contains "club 2", same for "club 3", "club 4", and all the
-other cards.
+As you may have realized, the way the game finds out your card is to
+overlay the three tables that do not contain your card. Then, the only
+missing card is the answer. Thus, let's say, for the table combination
+that represents card "club A", at least one of the three tables
+contains "club 2", same for "club 3", "club 4", and all the other
+cards.
 
 So we must design a layout that:
 
@@ -106,9 +112,14 @@ So we must design a layout that:
 
 ### The solution
 
-If we *choose the same number* for representation for each card, that
-ensures any other cards have at least one of the three tables containing
-it (requirement 2) See @fig-cross-table. Also, $\binom{8}{3} \geq 52.$ (requirement 1)
+If we *choose the same number of tables* representing each card, that
+ensures any other cards have at least one of the three tables
+containing it. (requirement 2) ---
+If every card is absent from exactly three tables, then no two cards
+can share the same three absent tables. Therefore, for the three
+tables assigned to a card, every other card must appear in at least
+one of them. See @fig-cross-table.
+Also, $\binom{8}{3} \geq 52.$ (requirement 1)
 
 ```{typst}
 //| align: center
@@ -182,15 +193,15 @@ it (requirement 2) See @fig-cross-table. Also, $\binom{8}{3} \geq 52.$ (requirem
 
 ---
 
-Actually, requirement 2 is optional. That is, *not* choosing a
-fixed number of tables to represent each indiviual cards is also
-possible. You can still pick a set of tables and identify which card
-it represents. However, that may cause a representation having multiple
+Actually, requirement 2 is optional. That is, *not* choosing a fixed
+number of tables to represent each individual cards is also possible.
+You can still pick a set of tables and identify which card it
+represents. However, that may cause a representation to have multiple
 holes:
 
 ```{typst}
 //| align: center
-//| label: fig-cross-table
+//| label: fig-cross-table-non-fixed
 //| cap: ""Spade A" has four holes, and "Spade 2" has three holes. If we find the tables for "Spade 2". Apart from having a hole of "Spade 2", they also have a hole of "Spade A". You can still identify this combination is "Spade 2", though."
 
 #import "@preview/cetz:0.5.1"
@@ -254,3 +265,6 @@ holes:
   content((total-width * 0.5, -0.4), [#text(18pt)[⋮]])
 })
 ```
+
+But of course we want to identify the answer more easily. So
+$\binom{8}{3}$ is fine.
