@@ -4,12 +4,16 @@ mod paper;
 use std::iter::Peekable;
 
 use arrayvec::ArrayVec;
-use macroquad::{prelude::*, rand::RandGenerator};
+use macroquad::{
+    prelude::*,
+    rand::RandGenerator,
+    ui::{Skin, root_ui},
+};
 
 use crate::{
     graphics::{
         AnimateState, Animator, AutoLayoutDraw, Dock, Dock2ShowLine, Draw, Hint, Layout, Showing,
-        Table, TableBuilder,
+        Table, TableBuilder, get_skins, setup_font,
     },
     paper::{Card, Paper},
 };
@@ -20,6 +24,7 @@ struct Game<'a, I: Iterator<Item = &'a Table>> {
     table_textures: &'a [Texture2D; 8],
     state: InteractState<'a>,
     asker: Asker<'a, I>,
+    skins: [Skin; 2],
 }
 
 impl<'a, I: Iterator<Item = &'a Table>> Game<'a, I> {
@@ -33,6 +38,7 @@ impl<'a, I: Iterator<Item = &'a Table>> Game<'a, I> {
             table_textures,
             asker,
             state: InteractState::Asking,
+            skins: get_skins(),
         }
     }
 
@@ -45,7 +51,7 @@ impl<'a, I: Iterator<Item = &'a Table>> Game<'a, I> {
     }
 
     fn handle_ask(&mut self) {
-        Self::draw_hint();
+        self.draw_hint();
         self.draw_dock();
         self.draw_ask();
         self.keyboard_answer();
@@ -126,8 +132,29 @@ impl<'a, I: Iterator<Item = &'a Table>> Game<'a, I> {
         }
     }
 
-    fn draw_hint() {
-        Hint::new("Is your card in the table? (y/n)", 20).draw();
+    fn draw_hint(&mut self) {
+        const TEXT: &str = "Is your card in the table?";
+        const FONT_SIZE: u16 = 20;
+
+        // text
+        Hint::new(TEXT, FONT_SIZE).draw();
+
+        // y/n buttons
+        let text_center = get_text_center(TEXT, None, FONT_SIZE, 1.0, 0.0);
+        let x = screen_width() * 0.5 + text_center.x;
+        let y = screen_height() * 0.182;
+        root_ui().push_skin(&self.skins[0]);
+        if root_ui().button(Vec2::new(x, y), "y") {
+            self.asker.is_included_in_asking(true);
+        }
+        root_ui().pop_skin();
+
+        let x = x + FONT_SIZE as f32;
+        root_ui().push_skin(&self.skins[1]);
+        if root_ui().button(Vec2::new(x, y), "n") {
+            self.asker.is_included_in_asking(false);
+        }
+        root_ui().pop_skin();
     }
 
     /// Return `excludeds` textures. Call this after `excludeds` has
@@ -239,14 +266,6 @@ async fn main() -> anyhow::Result<()> {
         game.update();
         next_frame().await;
     }
-}
-
-fn setup_font() -> Result<(), macroquad::Error> {
-    let font = load_ttf_font_from_bytes(include_bytes!("/usr/share/fonts/TTF/DejaVuSerif.ttf"))?;
-    // let font = load_ttf_font_from_bytes(include_bytes!("poker_dejavu.ttf"))?;
-    set_default_font(font);
-
-    Ok(())
 }
 
 fn setup_tables() -> [Table; 8] {

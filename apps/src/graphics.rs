@@ -1,7 +1,12 @@
 use crate::paper::{Card, Number, Suit};
 
 use derive_builder::Builder;
-use macroquad::prelude::*;
+use macroquad::{
+    prelude::*,
+    ui::{Skin, root_ui},
+};
+
+pub static FONT: &[u8] = include_bytes!("/usr/share/fonts/TTF/DejaVuSerif.ttf");
 
 pub trait Draw {
     fn draw(&self, layout: Layout);
@@ -291,6 +296,44 @@ impl Draw for Texture2D {
         };
         draw_texture_ex(self, layout.position.x, layout.position.y, WHITE, params);
     }
+}
+
+pub fn get_skins() -> [Skin; 2] {
+    const TRANS: Color = color_u8!(0, 0, 0, 0);
+    const FONT_SIZE: u16 = 30;
+    let style1 = root_ui()
+        .style_builder()
+        .color(TRANS)
+        .text_color(GREEN)
+        .font_size(FONT_SIZE)
+        .font(FONT)
+        .unwrap()
+        .build();
+    let skin1 = Skin {
+        button_style: style1,
+        ..root_ui().default_skin()
+    };
+    let style2 = root_ui()
+        .style_builder()
+        .color(TRANS)
+        .text_color(RED)
+        .font_size(FONT_SIZE)
+        .font(FONT)
+        .unwrap()
+        .build();
+    let skin2 = Skin {
+        button_style: style2,
+        ..root_ui().default_skin()
+    };
+
+    [skin1, skin2]
+}
+
+pub fn setup_font() -> Result<(), macroquad::Error> {
+    // let font = load_ttf_font_from_bytes(include_bytes!("poker_dejavu.ttf"))?;
+    set_default_font(load_ttf_font_from_bytes(FONT).unwrap());
+
+    Ok(())
 }
 
 fn draw_suit(suit: Suit, layout: Layout) {
