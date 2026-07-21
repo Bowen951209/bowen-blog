@@ -33,8 +33,6 @@ function init_webgl(version) {
     }
 }
 
-canvas.focus();
-
 canvas.requestPointerLock = canvas.requestPointerLock ||
     canvas.mozRequestPointerLock ||
     // pointer lock in any form is not supported on iOS safari 
