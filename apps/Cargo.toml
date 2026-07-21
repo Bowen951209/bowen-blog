@@ -10,5 +10,13 @@ combination = "0.2.2"
 derive_builder = "0.20.2"
 macroquad = "0.4.15"
 
+# Optimize for size
+[profile.release]
+strip = true
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+
 [[bin]]
 name = "poker"
