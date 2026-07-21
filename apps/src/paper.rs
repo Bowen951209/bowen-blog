@@ -23,11 +23,25 @@ impl std::fmt::Display for Suit {
     }
 }
 
+pub struct Number(u8);
+
+impl std::fmt::Display for Number {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self.0 {
+            1 => write!(f, "A"),
+            11 => write!(f, "J"),
+            12 => write!(f, "Q"),
+            13 => write!(f, "K"),
+            v => write!(f, "{v}"),
+        }
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Card(u8);
 
 impl Card {
-    pub fn as_suit_and_number(&self) -> (Suit, u8) {
+    pub fn as_suit_and_number(&self) -> (Suit, Number) {
         let (col, row) = self.as_col_row();
 
         let suit = match row {
@@ -38,7 +52,7 @@ impl Card {
             _ => panic!("Can only handle row 0, 1, 2, and 3."),
         };
 
-        let number = col + 1;
+        let number = Number(col + 1);
 
         (suit, number)
     }

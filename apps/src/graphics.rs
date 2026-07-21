@@ -1,4 +1,4 @@
-use crate::paper::{Card, Suit};
+use crate::paper::{Card, Number, Suit};
 
 use derive_builder::Builder;
 use macroquad::prelude::*;
@@ -312,7 +312,7 @@ fn draw_suit(suit: Suit, layout: Layout) {
     draw_text(&suit, position.x, position.y, suit_font_size as f32, color);
 }
 
-fn draw_number(number: u8, layout: Layout) {
+fn draw_number(number: Number, layout: Layout) {
     let number_font_size = (layout.size.x * 0.7).round() as u16;
 
     let number = number.to_string();
