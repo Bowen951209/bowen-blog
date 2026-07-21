@@ -6,7 +6,7 @@ use macroquad::{
     ui::{Skin, root_ui},
 };
 
-pub static FONT: &[u8] = include_bytes!("/usr/share/fonts/TTF/DejaVuSerif.ttf");
+pub static FONT: &[u8] = include_bytes!("./poker_dejavu.ttf");
 
 pub trait Draw {
     fn draw(&self, layout: Layout);
