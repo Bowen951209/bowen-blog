@@ -9,8 +9,189 @@
 <link>https://bowen951209.github.io/bowen-blog/</link>
 <atom:link href="https://bowen951209.github.io/bowen-blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>Bowen Ho&#39;s blog</description>
-<generator>quarto-1.9.36</generator>
-<lastBuildDate>Fri, 29 Mar 2024 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.9.38</generator>
+<lastBuildDate>Mon, 20 Jul 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>How to design a mind reading card?</title>
+  <link>https://bowen951209.github.io/bowen-blog/posts/mind_reading_poker/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="computer-mind-reading-card" class="level1">
+<h1>Computer mind reading card</h1>
+<p>A while ago, my sister came back from her school’s magic club and showed me an interesting game. I don’t know its official name. I have seen people call it the “computer mind reading card” or a “perspective card set.”</p>
+<div id="fig-product" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-product-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://bowen951209.github.io/bowen-blog/posts/mind_reading_poker/product.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-product-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: A “computer mind reading cards”. From <a href="https://dollarstoremagictricks.com/product/computer-mind-reading-cards" class="uri">https://dollarstoremagictricks.com/product/computer-mind-reading-cards</a>.
+</figcaption>
+</figure>
+</div>
+<p>To distinguish it from poker cards, I call them <em>tables</em> in the following.</p>
+</section>
+<section id="lets-play-first" class="level1">
+<h1>Let’s play first</h1>
+<p>To demonstrate how the game works, let’s first play it.</p>
+<ul>
+<li>Pick a card from a standard 52-card deck and keep it in mind.</li>
+<li>8 tables in series will appear on the screen. Each time, simply click <code>y</code> in the game, or press <code>y</code> on your keyboard if you see your card, or <code>n</code> if you don’t.</li>
+<li>Keep answering, and the game will guess your card in no time!</li>
+<li>You can always refresh the page to restart the game if you pressed the wrong button.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To play the game, <strong>WebGL2</strong> support in your browser is required. The source code can be found in <a href="https://github.com/Bowen951209/bowen-blog">this blog’s repository</a>. If you are unable to run it in your browser, you can try to build and run locally.</p>
+</div>
+</div>
+<div style="display: flex; justify-content: center; align-items: center; margin: 20px 0; width: 100%;">
+    <canvas id="glcanvas" tabindex="1" width="800" height="600" style="max-width: 100%; height: auto; border: 1px solid #ccc;"></canvas>
+</div>
+<script src="gl.js"></script>
+<script>load("../../apps/target/wasm32-unknown-unknown/release/poker.wasm");</script>
+<p>Did the game guess your card correctly? In theory, it always should.</p>
+</section>
+<section id="why-it-works" class="level1">
+<h1>Why it works?</h1>
+<p>Now, I will explain how the tables are designed, i.e., how we decide which card to put in which table, to make the game work.</p>
+<p>Some people may first come up with this:</p>
+<pre><code>We have 52 cards in total. It is sufficient to represent each of
+them by a combination of the 8 tables. For</code></pre>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbinom%7B8%7D%7B3%7D%20=%2056%20%5Cgeq%2052.%0A"></p>
+<p>That is indeed the key.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To ensure we are on the same page, <img src="https://latex.codecogs.com/png.latex?%5Cbinom%7B8%7D%7B3%7D"> is the notation for <em>8 choose 3</em>. Or, the count of combinations choosing <img src="https://latex.codecogs.com/png.latex?3"> individual items from <img src="https://latex.codecogs.com/png.latex?8"> individual items.</p>
+</div>
+</div>
+<section id="why-binom83" class="level2">
+<h2 class="anchored" data-anchor-id="why-binom83">Why <img src="https://latex.codecogs.com/png.latex?%5Cbinom%7B8%7D%7B3%7D">?</h2>
+<p>Why do we arrange <img src="https://latex.codecogs.com/png.latex?8"> tables, and choose <img src="https://latex.codecogs.com/png.latex?3"> of them for a card? In fact, <img src="https://latex.codecogs.com/png.latex?%5Cbinom%7B8%7D%7B3%7D"> is the minimal solution for <img src="https://latex.codecogs.com/png.latex?n"> and <img src="https://latex.codecogs.com/png.latex?k"> such that <img src="https://latex.codecogs.com/png.latex?%0A%5Cbinom%7Bn%7D%7Bk%7D%20%5Cgeq%2052.%0A"></p>
+<p>Of course we want to get the answer as quickly as possible.</p>
+<p>It is easier to see in this table:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><img src="https://latex.codecogs.com/png.latex?n"></th>
+<th><img src="https://latex.codecogs.com/png.latex?k"></th>
+<th><img src="https://latex.codecogs.com/png.latex?%5Cbinom%7Bn%7D%7Bk%7D"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>1, 2</td>
+<td>4, 6</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>1, 2</td>
+<td>5, 10</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>1, 2, 3</td>
+<td>6, 15, 20</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>1, 2, 3</td>
+<td>7, 21, 35</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>1, 2, 3, 4</td>
+<td>8, 28, <strong>56</strong>, 70</td>
+</tr>
+</tbody>
+</table>
+<p>…</p>
+</section>
+<section id="what-do-we-need" class="level2">
+<h2 class="anchored" data-anchor-id="what-do-we-need">What do we need?</h2>
+<p>As you may have realized, the way the game finds out your card is to overlay the three tables that do not contain your card. Then, the only missing card is the answer. Thus, let’s say, for the table combination that represents card “club A”, at least one of the three tables contains “club 2”, same for “club 3”, “club 4”, and all the other cards.</p>
+<p>So we must design a layout that:</p>
+<ol type="1">
+<li>A unique combination of tables is arranged for each 52 cards.</li>
+<li>That combination has only one <em>hole</em> of that card. i.e.&nbsp;There’s only one card that all the tables in the combination don’t contain.</li>
+</ol>
+<section id="the-solution" class="level3">
+<h3 class="anchored" data-anchor-id="the-solution">The solution</h3>
+<p>If we <em>choose the same number of tables</em> representing each card, that ensures any other cards have at least one of the three tables containing it. (requirement 2) — If every card is absent from exactly three tables, then no two cards can share the same three absent tables. Therefore, for the three tables assigned to a card, every other card must appear in at least one of them. See Figure&nbsp;2. Also, <img src="https://latex.codecogs.com/png.latex?%5Cbinom%7B8%7D%7B3%7D%20%5Cgeq%2052."> (requirement 1)</p>
+<div id="fig-cross-table" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cross-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div style="text-align: center;">
+<p><img src="https://bowen951209.github.io/bowen-blog/.quarto/typst-render/index/typst-fig-cross-table-598e42991.svg" class="img-fluid figure-img" alt="There are eight tables, A to H. A *cross* means the card is contained in the table. As you can see, for example, the tables not containing &quot;Spade A&quot; must contain any other cards. Because of choosing the same number of tables to contain for all cards."></p>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cross-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: There are eight tables, A to H. A <em>cross</em> means the card is contained in the table. As you can see, for example, the tables not containing “Spade A” must contain any other cards. Because of choosing the same number of tables to contain for all cards.
+</figcaption>
+</figure>
+</div>
+<hr>
+<p>Actually, requirement 2 is optional. That is, <em>not</em> choosing a fixed number of tables to represent each individual cards is also possible. You can still pick a set of tables and identify which card it represents. However, that may cause a representation to have multiple holes:</p>
+<div id="fig-cross-table-non-fixed" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cross-table-non-fixed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div style="text-align: center;">
+<p><img src="https://bowen951209.github.io/bowen-blog/.quarto/typst-render/index/typst-fig-cross-table-non-fixed-5e7ef9e61.svg" class="img-fluid figure-img" alt="&quot;Spade A&quot; has four holes, and &quot;Spade 2&quot; has three holes. If we find the tables for &quot;Spade 2&quot;. Apart from having a hole of &quot;Spade 2&quot;, they also have a hole of &quot;Spade A&quot;. You can still identify this combination is &quot;Spade 2&quot;, though."></p>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cross-table-non-fixed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: “Spade A” has four holes, and “Spade 2” has three holes. If we find the tables for “Spade 2”. Apart from having a hole of “Spade 2”, they also have a hole of “Spade A”. You can still identify this combination is “Spade 2”, though.
+</figcaption>
+</figure>
+</div>
+<p>But of course we want to identify the answer more easily. So <img src="https://latex.codecogs.com/png.latex?%5Cbinom%7B8%7D%7B3%7D"> is fine.</p>
+
+
+</section>
+</section>
+</section>
+
+ ]]></description>
+  <category>math</category>
+  <guid>https://bowen951209.github.io/bowen-blog/posts/mind_reading_poker/</guid>
+  <pubDate>Mon, 20 Jul 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Fixing a broken audio that sounds normal on some devices but broken on others</title>
   <link>https://bowen951209.github.io/bowen-blog/posts/broken_audio/</link>

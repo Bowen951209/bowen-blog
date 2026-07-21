@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://bowen951209.github.io/bowen-blog/posts/broken_audio/index.html</loc>
-    <lastmod>2026-03-28T01:50:00.589Z</lastmod>
-  </url>
-  <url>
     <loc>https://bowen951209.github.io/bowen-blog/index.html</loc>
-    <lastmod>2026-03-28T01:50:00.579Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bowen951209.github.io/bowen-blog/about.html</loc>
-    <lastmod>2026-03-28T01:50:00.579Z</lastmod>
+    <lastmod>2026-07-21T07:59:25.011Z</lastmod>
   </url>
   <url>
     <loc>https://bowen951209.github.io/bowen-blog/posts/trans_video/index.html</loc>
-    <lastmod>2026-03-28T01:50:00.603Z</lastmod>
+    <lastmod>2026-07-21T07:59:25.037Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowen951209.github.io/bowen-blog/posts/mind_reading_poker/index.html</loc>
+    <lastmod>2026-07-21T07:59:25.029Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowen951209.github.io/bowen-blog/posts/broken_audio/index.html</loc>
+    <lastmod>2026-07-21T07:59:25.021Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowen951209.github.io/bowen-blog/about.html</loc>
+    <lastmod>2026-07-21T07:59:25.010Z</lastmod>
   </url>
 </urlset>
