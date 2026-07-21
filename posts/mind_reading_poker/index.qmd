@@ -5,7 +5,7 @@ categories: [math]
 filters:
   - typst-render
 resources:
-  - apps.wasm
+  - ../../apps/target/wasm32-unknown-unknown/release/poker.wasm
   - gl.js
 ---
 
@@ -40,7 +40,7 @@ If you are unable to run it in your browser, you can try to build and run locall
     <canvas id="glcanvas" tabindex='1' width="800" height="600" style="max-width: 100%; height: auto; border: 1px solid #ccc;"></canvas>
 </div>
 <script src="gl.js"></script>
-<script>load("apps.wasm");</script>
+<script>load("../../apps/target/wasm32-unknown-unknown/release/poker.wasm");</script>
 ```
 
 Do you have your card guessed correctly? It should, in theory.
