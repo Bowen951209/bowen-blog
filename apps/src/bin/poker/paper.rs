@@ -1,4 +1,4 @@
-use combination::v2::{Combine, Select};
+use itertools::Itertools;
 use macroquad::rand::{ChooseRandom, RandGenerator};
 
 pub type Paper = Vec<Card>;
@@ -71,13 +71,12 @@ impl Card {
 
 pub fn setup_papers(rng: &RandGenerator) -> [Paper; 8] {
     let mut papers: [Paper; 8] = std::array::from_fn(|_| Vec::new());
-    let paper_indices: [usize; 8] = std::array::from_fn(|i| i);
-    let mut included_paper_indices = paper_indices.try_select(&Combine::new(8, 5)).unwrap();
+    let mut included_paper_indices = (0usize..8).combinations(5).collect_array::<56>().unwrap();
     included_paper_indices.shuffle_with_state(rng);
 
     for (card, included_paper_indices) in Card::all().zip(included_paper_indices) {
         for included_paper_index in included_paper_indices {
-            papers[*included_paper_index].push(card);
+            papers[included_paper_index].push(card);
         }
     }
 
