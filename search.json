@@ -7,6 +7,48 @@
     "text": "Date\n\n\n\nTitle\n\n\n\nAuthor\n\n\n\n\n\n\n\n\nJul 20, 2026\n\n\nHow to design a mind reading card?\n\n\n \n\n\n\n\n\n\nMar 29, 2024\n\n\nFixing a broken audio that sounds normal on some devices but broken on others\n\n\n \n\n\n\n\n\n\nMar 21, 2024\n\n\nExporting a video with an alpha channel using JavaCV\n\n\n \n\n\n\n\n\n\nNo matching items"
   },
   {
+    "objectID": "posts/broken_audio/index.html",
+    "href": "posts/broken_audio/index.html",
+    "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
+    "section": "",
+    "text": "Here’s an audio I got. It played normally on my PC, but sounded broken when playing on my phone. Try to play it on your devices and see if you encounter the same issue as mine."
+  },
+  {
+    "objectID": "posts/broken_audio/index.html#the-problem",
+    "href": "posts/broken_audio/index.html#the-problem",
+    "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
+    "section": "",
+    "text": "Here’s an audio I got. It played normally on my PC, but sounded broken when playing on my phone. Try to play it on your devices and see if you encounter the same issue as mine."
+  },
+  {
+    "objectID": "posts/broken_audio/index.html#why-did-that-happen-destructive-interference",
+    "href": "posts/broken_audio/index.html#why-did-that-happen-destructive-interference",
+    "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
+    "section": "Why did that happen? — Destructive Interference",
+    "text": "Why did that happen? — Destructive Interference\nAfter diving into this problem, in my case, I found that it was caused by a physical phenomenon called destructive interference. Interferences are divided into two types — constructive and destructive. When multiple waves add together, they interfere with each other. The final wave is equal to the addition of those waves. When all the waves are identity, the final wave will sound as same as the original, but the amplitude is bigger, which makes the sound louder, and that is the constructive interference. On the contrary, if two waves are opposite (one’s crest happens at another’s trough), the addition of them becomes a flat pattern, making no sound, which is called the destructive interference.\nHere is a figure showing this:\n\n\n\ninterference\n\n\nsource\nThe waveform screenshot of my audio in iZotope RX 10:  You can see that the two waves are almost completely opposite.\nAs you may have known, most of the audios contain two sound channels — the left and the right. And somehow some encoding errors happened, and the two channels became opposite, which eventually causes the destructive interference if the speakers are put at a specific angle and position."
+  },
+  {
+    "objectID": "posts/broken_audio/index.html#how-to-fix",
+    "href": "posts/broken_audio/index.html#how-to-fix",
+    "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
+    "section": "How to Fix?",
+    "text": "How to Fix?\nOf course, you can re-record it from other devices that don’t have an interference, but I want to show you how to fix it in an audio editor. I’ll do it in RX10. If you don’t have the software, others like Audacity should be similar.\n\nSelect one of the channels and copy it with Ctrl + C\n\n\n\ncopying\n\n\n\n\nDelete both channel\n\n\n\ndeleting\n\n\n\n\nSelect both channel and paste with Ctrl + V\n As you can see, the two waves are now identity.\n\n\nExport the audio and done\n Export with whatever settings you want."
+  },
+  {
+    "objectID": "posts/broken_audio/index.html#story-about-the-audio",
+    "href": "posts/broken_audio/index.html#story-about-the-audio",
+    "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
+    "section": "Story About The Audio",
+    "text": "Story About The Audio\nThis audio came from my Chinese teacher. It was a poem called 錯誤, sung by his classmate when he was a high school student. The classmate, singer of this audio, has a miserable story. She was a victim of the “White Terror” in Taiwan. Her dad was sent to jail, and her relatives kept distance from her family. When we learned this poem in the Chinese class, our teacher shared this song to us. Sadly, it wasn’t able to play through our classroom’s speakers.\nI’ve once listened to a music on YouTube, and it had the same problem that my PC played fine, but my phone played with broken sound. I can’t find it now, but the teacher’s audio seemed to have a same problem. I was really curious about what the problem is, wanting to fix the audio. A day when I was taking a nap, there was a flash of inspiration, I tested it, and it really was that cause. So I wrote this post hoping that someone encountered the same problem can have a solution."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Hi! My name is Bowen Ho. I am from Taiwan. Currently studying in National Chung Hsing University as an undergraduate at the department of civil engineering.\n\nemail: bowen951209@gmail.com\nGitHub: https://github.com/Bowen951209"
+  },
+  {
     "objectID": "posts/trans_video/index.html",
     "href": "posts/trans_video/index.html",
     "title": "Exporting a video with an alpha channel using JavaCV",
@@ -68,47 +110,5 @@
     "title": "How to design a mind reading card?",
     "section": "What do we need?",
     "text": "What do we need?\nAs you may have realized, the way the game finds out your card is to overlay the three tables that do not contain your card. Then, the only missing card is the answer. Thus, let’s say, for the table combination that represents card “club A”, at least one of the three tables contains “club 2”, same for “club 3”, “club 4”, and all the other cards.\nSo we must design a layout that:\n\nA unique combination of tables is arranged for each 52 cards.\nThat combination has only one hole of that card. i.e. There’s only one card that all the tables in the combination don’t contain.\n\n\nThe solution\nIf we choose the same number of tables representing each card, that ensures any other cards have at least one of the three tables containing it. (requirement 2) — If every card is absent from exactly three tables, then no two cards can share the same three absent tables. Therefore, for the three tables assigned to a card, every other card must appear in at least one of them. See Figure 2. Also, \\(\\binom{8}{3} \\geq 52.\\) (requirement 1)\n\n\n\n\n\n\n\n\nFigure 2: There are eight tables, A to H. A cross means the card is contained in the table. As you can see, for example, the tables not containing “Spade A” must contain any other cards. Because of choosing the same number of tables to contain for all cards.\n\n\n\n\nActually, requirement 2 is optional. That is, not choosing a fixed number of tables to represent each individual cards is also possible. You can still pick a set of tables and identify which card it represents. However, that may cause a representation to have multiple holes:\n\n\n\n\n\n\n\n\nFigure 3: “Spade A” has four holes, and “Spade 2” has three holes. If we find the tables for “Spade 2”. Apart from having a hole of “Spade 2”, they also have a hole of “Spade A”. You can still identify this combination is “Spade 2”, though.\n\n\n\nBut of course we want to identify the answer more easily. So \\(\\binom{8}{3}\\) is fine."
-  },
-  {
-    "objectID": "posts/broken_audio/index.html",
-    "href": "posts/broken_audio/index.html",
-    "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
-    "section": "",
-    "text": "Here’s an audio I got. It played normally on my PC, but sounded broken when playing on my phone. Try to play it on your devices and see if you encounter the same issue as mine."
-  },
-  {
-    "objectID": "posts/broken_audio/index.html#the-problem",
-    "href": "posts/broken_audio/index.html#the-problem",
-    "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
-    "section": "",
-    "text": "Here’s an audio I got. It played normally on my PC, but sounded broken when playing on my phone. Try to play it on your devices and see if you encounter the same issue as mine."
-  },
-  {
-    "objectID": "posts/broken_audio/index.html#why-did-that-happen-destructive-interference",
-    "href": "posts/broken_audio/index.html#why-did-that-happen-destructive-interference",
-    "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
-    "section": "Why did that happen? — Destructive Interference",
-    "text": "Why did that happen? — Destructive Interference\nAfter diving into this problem, in my case, I found that it was caused by a physical phenomenon called destructive interference. Interferences are divided into two types — constructive and destructive. When multiple waves add together, they interfere with each other. The final wave is equal to the addition of those waves. When all the waves are identity, the final wave will sound as same as the original, but the amplitude is bigger, which makes the sound louder, and that is the constructive interference. On the contrary, if two waves are opposite (one’s crest happens at another’s trough), the addition of them becomes a flat pattern, making no sound, which is called the destructive interference.\nHere is a figure showing this:\n\n\n\ninterference\n\n\nsource\nThe waveform screenshot of my audio in iZotope RX 10:  You can see that the two waves are almost completely opposite.\nAs you may have known, most of the audios contain two sound channels — the left and the right. And somehow some encoding errors happened, and the two channels became opposite, which eventually causes the destructive interference if the speakers are put at a specific angle and position."
-  },
-  {
-    "objectID": "posts/broken_audio/index.html#how-to-fix",
-    "href": "posts/broken_audio/index.html#how-to-fix",
-    "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
-    "section": "How to Fix?",
-    "text": "How to Fix?\nOf course, you can re-record it from other devices that don’t have an interference, but I want to show you how to fix it in an audio editor. I’ll do it in RX10. If you don’t have the software, others like Audacity should be similar.\n\nSelect one of the channels and copy it with Ctrl + C\n\n\n\ncopying\n\n\n\n\nDelete both channel\n\n\n\ndeleting\n\n\n\n\nSelect both channel and paste with Ctrl + V\n As you can see, the two waves are now identity.\n\n\nExport the audio and done\n Export with whatever settings you want."
-  },
-  {
-    "objectID": "posts/broken_audio/index.html#story-about-the-audio",
-    "href": "posts/broken_audio/index.html#story-about-the-audio",
-    "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
-    "section": "Story About The Audio",
-    "text": "Story About The Audio\nThis audio came from my Chinese teacher. It was a poem called 錯誤, sung by his classmate when he was a high school student. The classmate, singer of this audio, has a miserable story. She was a victim of the “White Terror” in Taiwan. Her dad was sent to jail, and her relatives kept distance from her family. When we learned this poem in the Chinese class, our teacher shared this song to us. Sadly, it wasn’t able to play through our classroom’s speakers.\nI’ve once listened to a music on YouTube, and it had the same problem that my PC played fine, but my phone played with broken sound. I can’t find it now, but the teacher’s audio seemed to have a same problem. I was really curious about what the problem is, wanting to fix the audio. A day when I was taking a nap, there was a flash of inspiration, I tested it, and it really was that cause. So I wrote this post hoping that someone encountered the same problem can have a solution."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "Hi! My name is Bowen Ho. I am from Taiwan. Currently studying in National Chung Hsing University as an undergraduate at the department of civil engineering.\n\nemail: bowen951209@gmail.com\nGitHub: https://github.com/Bowen951209"
   }
 ]
