@@ -1,12 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Bowen Ho's blog",
-    "section": "",
-    "text": "Date\n\n\n\nTitle\n\n\n\nAuthor\n\n\n\n\n\n\n\n\nJul 20, 2026\n\n\nHow to design a mind reading card?\n\n\n \n\n\n\n\n\n\nMar 29, 2024\n\n\nFixing a broken audio that sounds normal on some devices but broken on others\n\n\n \n\n\n\n\n\n\nMar 21, 2024\n\n\nExporting a video with an alpha channel using JavaCV\n\n\n \n\n\n\n\n\n\nNo matching items"
-  },
-  {
     "objectID": "posts/broken_audio/index.html",
     "href": "posts/broken_audio/index.html",
     "title": "Fixing a broken audio that sounds normal on some devices but broken on others",
@@ -42,11 +35,39 @@
     "text": "Story About The Audio\nThis audio came from my Chinese teacher. It was a poem called 錯誤, sung by his classmate when he was a high school student. The classmate, singer of this audio, has a miserable story. She was a victim of the “White Terror” in Taiwan. Her dad was sent to jail, and her relatives kept distance from her family. When we learned this poem in the Chinese class, our teacher shared this song to us. Sadly, it wasn’t able to play through our classroom’s speakers.\nI’ve once listened to a music on YouTube, and it had the same problem that my PC played fine, but my phone played with broken sound. I can’t find it now, but the teacher’s audio seemed to have a same problem. I was really curious about what the problem is, wanting to fix the audio. A day when I was taking a nap, there was a flash of inspiration, I tested it, and it really was that cause. So I wrote this post hoping that someone encountered the same problem can have a solution."
   },
   {
+    "objectID": "posts/mind_reading_poker/index.html",
+    "href": "posts/mind_reading_poker/index.html",
+    "title": "How to design a mind reading card?",
+    "section": "",
+    "text": "A while ago, my sister came back from her school’s magic club and showed me an interesting game. I don’t know its official name. I have seen people call it the “computer mind reading card” or a “perspective card set.”\n\n\n\n\n\n\nFigure 1: A “computer mind reading cards”. From https://dollarstoremagictricks.com/product/computer-mind-reading-cards.\n\n\n\nTo distinguish it from poker cards, I call them tables in the following."
+  },
+  {
+    "objectID": "posts/mind_reading_poker/index.html#why-binom83",
+    "href": "posts/mind_reading_poker/index.html#why-binom83",
+    "title": "How to design a mind reading card?",
+    "section": "Why \\(\\binom{8}{3}\\)?",
+    "text": "Why \\(\\binom{8}{3}\\)?\nWhy do we arrange \\(8\\) tables, and choose \\(3\\) of them for a card? In fact, \\(\\binom{8}{3}\\) is the minimal solution for \\(n\\) and \\(k\\) such that \\[\n\\binom{n}{k} \\geq 52.\n\\]\nOf course we want to get the answer as quickly as possible.\nIt is easier to see in this table:\n\n\n\n\\(n\\)\n\\(k\\)\n\\(\\binom{n}{k}\\)\n\n\n\n\n1\n1\n1\n\n\n2\n1\n2\n\n\n3\n1\n3\n\n\n4\n1, 2\n4, 6\n\n\n5\n1, 2\n5, 10\n\n\n6\n1, 2, 3\n6, 15, 20\n\n\n7\n1, 2, 3\n7, 21, 35\n\n\n8\n1, 2, 3, 4\n8, 28, 56, 70\n\n\n\n…"
+  },
+  {
+    "objectID": "posts/mind_reading_poker/index.html#what-do-we-need",
+    "href": "posts/mind_reading_poker/index.html#what-do-we-need",
+    "title": "How to design a mind reading card?",
+    "section": "What do we need?",
+    "text": "What do we need?\nAs you may have realized, the way the game finds out your card is to overlay the three tables that do not contain your card. Then, the only missing card is the answer. Thus, let’s say, for the table combination that represents card “club A”, at least one of the three tables contains “club 2”, same for “club 3”, “club 4”, and all the other cards.\nSo we must design a layout that:\n\nA unique combination of tables is arranged for each 52 cards.\nThat combination has only one hole of that card. i.e. There’s only one card that all the tables in the combination don’t contain.\n\n\nThe solution\nIf we choose the same number of tables representing each card, that ensures any other cards have at least one of the three tables containing it. (requirement 2) — If every card is absent from exactly three tables, then no two cards can share the same three absent tables. Therefore, for the three tables assigned to a card, every other card must appear in at least one of them. See Figure 2. Also, \\(\\binom{8}{3} \\geq 52.\\) (requirement 1)\n\n\n\n\n\n\n\n\nFigure 2: There are eight tables, A to H. A cross means the card is contained in the table. As you can see, for example, the tables not containing “Spade A” must contain any other cards. Because of choosing the same number of tables to contain for all cards.\n\n\n\n\nActually, requirement 2 is optional. That is, not choosing a fixed number of tables to represent each individual cards is also possible. You can still pick a set of tables and identify which card it represents. However, that may cause a representation to have multiple holes:\n\n\n\n\n\n\n\n\nFigure 3: “Spade A” has four holes, and “Spade 2” has three holes. If we find the tables for “Spade 2”. Apart from having a hole of “Spade 2”, they also have a hole of “Spade A”. You can still identify this combination is “Spade 2”, though.\n\n\n\nBut of course we want to identify the answer more easily. So \\(\\binom{8}{3}\\) is fine."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Bowen Ho's blog",
+    "section": "",
+    "text": "Date\n\n\n\nTitle\n\n\n\nAuthor\n\n\n\n\n\n\n\n\nJul 20, 2026\n\n\nHow to design a mind reading card?\n\n\n \n\n\n\n\n\n\nMar 29, 2024\n\n\nFixing a broken audio that sounds normal on some devices but broken on others\n\n\n \n\n\n\n\n\n\nMar 21, 2024\n\n\nExporting a video with an alpha channel using JavaCV\n\n\n \n\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "Hi! My name is Bowen Ho. I am from Taiwan. Currently studying in National Chung Hsing University as an undergraduate at the department of civil engineering.\n\nemail: bowen951209@gmail.com\nGitHub: https://github.com/Bowen951209"
+    "text": "Hi! My name is Bowen Ho. I am from Taiwan. Currently studying in National Chung Hsing University as an undergraduate at the department of civil engineering.\n\nEmail: Bowen Ho &lt;bowen951209@gmail.com&gt;\nGitHub: https://github.com/Bowen951209\nGPG public key:\n\nFingerprint: 1B2A B9C8 982E EEEF 5011 91E4 2D7A 7BB3 AB77 F71B\nAvailable at: gpg_pub_key.asc, openpgp.org, GitHub"
   },
   {
     "objectID": "posts/trans_video/index.html",
@@ -89,26 +110,5 @@
     "title": "Exporting a video with an alpha channel using JavaCV",
     "section": "References",
     "text": "References\n\nhttps://superuser.com/questions/1505679/lossless-video-codec-supporting-alpha-channels?newreg=368280d984fb4b76889136daf35a942c\nhttps://en.wikipedia.org/wiki/FFV1"
-  },
-  {
-    "objectID": "posts/mind_reading_poker/index.html",
-    "href": "posts/mind_reading_poker/index.html",
-    "title": "How to design a mind reading card?",
-    "section": "",
-    "text": "A while ago, my sister came back from her school’s magic club and showed me an interesting game. I don’t know its official name. I have seen people call it the “computer mind reading card” or a “perspective card set.”\n\n\n\n\n\n\nFigure 1: A “computer mind reading cards”. From https://dollarstoremagictricks.com/product/computer-mind-reading-cards.\n\n\n\nTo distinguish it from poker cards, I call them tables in the following."
-  },
-  {
-    "objectID": "posts/mind_reading_poker/index.html#why-binom83",
-    "href": "posts/mind_reading_poker/index.html#why-binom83",
-    "title": "How to design a mind reading card?",
-    "section": "Why \\(\\binom{8}{3}\\)?",
-    "text": "Why \\(\\binom{8}{3}\\)?\nWhy do we arrange \\(8\\) tables, and choose \\(3\\) of them for a card? In fact, \\(\\binom{8}{3}\\) is the minimal solution for \\(n\\) and \\(k\\) such that \\[\n\\binom{n}{k} \\geq 52.\n\\]\nOf course we want to get the answer as quickly as possible.\nIt is easier to see in this table:\n\n\n\n\\(n\\)\n\\(k\\)\n\\(\\binom{n}{k}\\)\n\n\n\n\n1\n1\n1\n\n\n2\n1\n2\n\n\n3\n1\n3\n\n\n4\n1, 2\n4, 6\n\n\n5\n1, 2\n5, 10\n\n\n6\n1, 2, 3\n6, 15, 20\n\n\n7\n1, 2, 3\n7, 21, 35\n\n\n8\n1, 2, 3, 4\n8, 28, 56, 70\n\n\n\n…"
-  },
-  {
-    "objectID": "posts/mind_reading_poker/index.html#what-do-we-need",
-    "href": "posts/mind_reading_poker/index.html#what-do-we-need",
-    "title": "How to design a mind reading card?",
-    "section": "What do we need?",
-    "text": "What do we need?\nAs you may have realized, the way the game finds out your card is to overlay the three tables that do not contain your card. Then, the only missing card is the answer. Thus, let’s say, for the table combination that represents card “club A”, at least one of the three tables contains “club 2”, same for “club 3”, “club 4”, and all the other cards.\nSo we must design a layout that:\n\nA unique combination of tables is arranged for each 52 cards.\nThat combination has only one hole of that card. i.e. There’s only one card that all the tables in the combination don’t contain.\n\n\nThe solution\nIf we choose the same number of tables representing each card, that ensures any other cards have at least one of the three tables containing it. (requirement 2) — If every card is absent from exactly three tables, then no two cards can share the same three absent tables. Therefore, for the three tables assigned to a card, every other card must appear in at least one of them. See Figure 2. Also, \\(\\binom{8}{3} \\geq 52.\\) (requirement 1)\n\n\n\n\n\n\n\n\nFigure 2: There are eight tables, A to H. A cross means the card is contained in the table. As you can see, for example, the tables not containing “Spade A” must contain any other cards. Because of choosing the same number of tables to contain for all cards.\n\n\n\n\nActually, requirement 2 is optional. That is, not choosing a fixed number of tables to represent each individual cards is also possible. You can still pick a set of tables and identify which card it represents. However, that may cause a representation to have multiple holes:\n\n\n\n\n\n\n\n\nFigure 3: “Spade A” has four holes, and “Spade 2” has three holes. If we find the tables for “Spade 2”. Apart from having a hole of “Spade 2”, they also have a hole of “Spade A”. You can still identify this combination is “Spade 2”, though.\n\n\n\nBut of course we want to identify the answer more easily. So \\(\\binom{8}{3}\\) is fine."
   }
 ]
