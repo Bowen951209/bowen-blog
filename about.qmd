@@ -3,11 +3,20 @@ title: "About"
 image: profile.jpg
 about:
   template: marquee
+resources:
+  - gpg_pub_key.asc
 ---
 
 Hi! My name is Bowen Ho. I am from Taiwan. Currently studying in 
 [National Chung Hsing University](https://www.nchu.edu.tw/index1.php)
 as an undergraduate at the department of civil engineering.
 
-- email: bowen951209@gmail.com
+- Email: Bowen Ho \<bowen951209@gmail.com\>
 - GitHub: <https://github.com/Bowen951209>
+- GPG public key:
+  - Fingerprint: 1B2A B9C8 982E EEEF 5011  91E4 2D7A 7BB3 AB77 F71B
+  - Available at: [gpg_pub_key.asc][1], [openpgp.org][2], [GitHub][3]
+
+[1]: gpg_pub_key.asc
+[2]: https://keys.openpgp.org/vks/v1/by-fingerprint/1B2AB9C8982EEEEF501191E42D7A7BB3AB77F71B
+[3]: https://github.com/Bowen951209.gpg
